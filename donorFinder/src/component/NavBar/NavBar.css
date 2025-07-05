@@ -1,0 +1,38 @@
+nav{
+    margin-top: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--nav);
+    /* border: 1px solid; */
+    border-radius: 20px;
+}
+ul{
+    /* border: 1px solid; */
+    display: flex;
+    
+}
+.links li{
+    display: inline-flex;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100%;
+    &:hover a{
+        color: var(--nav-hover);
+    }
+
+}
+.links a{
+    text-decoration: none;
+    
+}
+.links li span{
+}
+
+.logo{
+    color:var(--logo);
+}
+.links a{
+    color:var(--link);
+}
