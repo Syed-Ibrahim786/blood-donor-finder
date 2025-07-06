@@ -4,19 +4,15 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import MainLayout from './layout/mainLayout'
 import Home from './page/Home/Home'
 import Login from './page/Home/Login/Login'
+import Approutes from './routes/Approutes'
+
+
 const App = () => {
   return (
     <>
-    
-    <BrowserRouter>
-    
-    <Routes>
-      <Route path='/' element={<MainLayout/>}>
-      <Route index element={<Home/>}/>
-      <Route path='/login' element={<Login/>}/>
-      </Route>
-    </Routes>
-    </BrowserRouter>
+      <NavBar/>
+      <Approutes/>
+
     </>
   )
 }
