@@ -1,14 +1,14 @@
-nav{
+/* nav{
     margin-top: 10px;
     padding: 20px;
     display: flex;
     justify-content: space-between;
     background-color: var(--nav);
-    /* border: 1px solid; */
+
     border-radius: 20px;
 }
 ul{
-    /* border: 1px solid; */
+
     display: flex;
     
 }
@@ -35,4 +35,4 @@ ul{
 }
 .links a{
     color:var(--link);
-}
+} */
