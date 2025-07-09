@@ -8,6 +8,7 @@ import Register from "../page/Home/Login/Register";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import Search from "../page/Search";
+
 import AdminPanel from "../page/AdminPanel";
 import ProtectedRoutes from "./ProtectedRoutes";
 import AppContext from "../context/AppContext";
@@ -17,6 +18,11 @@ import AdminRoutes from "./AdminRoutes";
 import Dashboard from "../page/Home/Dashboard";
 import DonorDashboard from "../page/DonorDashboard";
 import RequesterDashboard from "../page/RequesterDashboard";
+
+import ProtectedRoutes from "./ProtectedRoutes";
+import AppContext from "../context/AppContext";
+import App from "../App";
+
 
 function Approutes() {
   // UseLocal has the current location .. it is important for framer motion and other animation librariues to work while routing back to back from pages to pages
@@ -33,6 +39,7 @@ function Approutes() {
 
       <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
+
           <Route element={<ProtectedRoutes/>}>
             <Route path="/" element={<MainLayout />} />
             <Route index element={<Home />} />
@@ -42,6 +49,12 @@ function Approutes() {
               <Route path="requester" element={<RequesterDashboard/>}/>
 
             </Route>
+
+
+          <Route element={<ProtectedRoutes></ProtectedRoutes>}>
+            <Route path="/" element={<MainLayout />} />
+            <Route index element={<Home />} />
+            <Route path="/search" element={<Search />} /> 
 
             <Route />
           </Route>
@@ -59,7 +72,11 @@ function Approutes() {
                 {" "}
                 <Login />
               </motion.div>
+
               ) : <Navigate to="/dashboard/donor" ></Navigate>
+
+              ) : <Navigate to="/search"></Navigate>
+
             }
           />
 
@@ -76,12 +93,18 @@ function Approutes() {
                 {" "}
                 <Register />
               </motion.div>
+
               ) : <Navigate to="/dashboard/donor"></Navigate>
             }
           />
 
           <Route element={<AdminPanel/>}></Route>
           <Route path="/admin" element={<AdminLogin/>}></Route>
+
+
+              ) : <Navigate to="/search"></Navigate>
+            }
+          />
 
         </Routes>
 
