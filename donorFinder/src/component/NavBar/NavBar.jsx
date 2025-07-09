@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import '../NavBar/NavBar.css'
 import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { Divide as Hamburger } from 'hamburger-react'
 import { useState } from 'react'
+import AppContext from '../../context/AppContext'
 
 
 const NavBar = () => {
+
+  const {LoginState , setLoginState} = useContext(AppContext);
 
   const [isOpen, setOpen] = useState(false)
 
@@ -16,31 +19,30 @@ const NavBar = () => {
 
   const inActive = 'font-semi-bold '
 
+  const signout = () => {
+    setLoginState(false)
+    localStorage.clear()
+  }
+
 
   return (
    
       <div className='text-white p-5 bg-gradient-to-r from-red-500 to-red-400'>
         <nav className='max-w-7xl flex mx-auto justify-between '>
        <div className='my-auto'>
-         <NavLink to="/" className=' transition-all hover:scale-105' >🩸FindBlood</NavLink>
+         <NavLink to="/" className=' transition-all hover:scale-105' ><img className='w-50' src='/src/assets/BloodNet.svg' /></NavLink>
        </div>  
         {
-            <ul className= {` ${isOpen ?"flex":"hidden translate-y-0"} transition-all duration-300 flex flex-col absolute right-0 top-21.5 h-screen p-5 w-screen md:w-fit md:flex md:flex-row gap-6 md:static md:h-0  items-center bg-gradient-to-l from-red-400 to-red-500 md:bg-none z-10`}>
+          LoginState && (<ul className= {` ${isOpen ?"flex":"hidden translate-y-0"} transition-all duration-300 flex flex-col absolute right-0 top-21.5 h-screen p-5 w-screen md:w-fit md:flex md:flex-row gap-6 md:static md:h-0  items-center bg-gradient-to-l from-red-400 to-red-500 md:bg-none z-10`}>
             <li><NavLink onClick={()=> {setOpen(false)}} className={({isActive}) => isActive?active:inActive} to="">Be Donor</NavLink></li>
             <li><NavLink onClick={()=> {setOpen(false)}} className={({isActive}) => isActive?active:inActive} to="/search">Search Donor</NavLink></li>
-            <li><NavLink onClick={()=> {setOpen(false)}} className={
-              location.pathname === '/login' || location.pathname === '/register'
-            ?active:inActive} to="/login" >login/register</NavLink></li>
-            {/* <li><a href="" class="material-symbols-outlined">
-                routine
-                </a>
-            </li> */}
-        </ul>
-
+            <li><NavLink onClick={()=>{signout()}} className="bg-white text-red-500 px-5 py-3 rounded-xl">Sign Out</NavLink></li>
+            
+        </ul>)
         }
-        <div className='burger-btn blobk'>
+        {/* <div className='burger-btn blobk'>
           <Hamburger toggled={isOpen} toggle={setOpen} />
-        </div>
+        </div> */}
       </nav>
       </div>
     
