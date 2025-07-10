@@ -14,7 +14,7 @@ const NavBar = () => {
 
   const [isOpen, setOpen] = useState(true)
 
-  const [isOpen, setOpen] = useState(false)
+  // const [isOpen, setOpen] = useState(false)
 
   const location = useLocation()
 
@@ -41,7 +41,10 @@ const NavBar = () => {
          <NavLink to="/" className=' transition-all hover:scale-105' ><img className='w-50' src='/src/assets/BloodNet.svg' /></NavLink>
        </div>  
         {
-          LoginState && (<ul className= {` ${isOpen ?"flex":"hidden translate-y-0"} transition-all duration-300 flex flex-col absolute right-0 top-21.5 h-screen p-5 w-screen md:w-fit md:flex md:flex-row gap-6 md:static md:h-0  items-center bg-gradient-to-l from-red-400 to-red-500 md:bg-none z-10`}>
+          LoginState && (<ul className= {` ${isOpen ?"flex":"hidden translate-y-0"}
+             transition-all duration-300 flex flex-col absolute right-0 top-21.5 h-screen p-5
+              w-screen md:w-fit md:flex md:flex-row gap-6 md:static md:h-0  items-center
+               bg-gradient-to-l from-red-400 to-red-500 md:bg-none z-10`}>
             <li><NavLink onClick={()=> {setOpen(false)}} className={({isActive}) => isActive?active:inActive} to="">Be Donor</NavLink></li>
             <li><NavLink onClick={()=> {setOpen(false)}} className={({isActive}) => isActive?active:inActive} to="/search">Search Donor</NavLink></li>
 

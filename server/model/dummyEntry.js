@@ -28,22 +28,31 @@ await mongoose.connect(process.env.MONGODB_URL);
 async function createDummy() {
   try {
     const result = await BloodRequest.create(
-        {
-  requester: "68678616c88f307d7d1c5cc5",
-  recipients: [
-    "68677f86fd80cfe65e8a7a2a"
-  ],
-  hospitalName: "Apollo Hospital, Chennai",
+//         {
+//   requester: "68678616c88f307d7d1c5cc5",
+//   recipients: [
+//     "68677f86fd80cfe65e8a7a2a"
+//   ],
+//   hospitalName: "Apollo Hospital, Chennai",
   
-  status: "fulfilled", // optional, default is "pending"
-},
+//   status: "fulfilled", // optional, default is "pending"
+// },
+// {
+//   requester: "68678616c88f307d7d1c5cc5",
+//   recipients: [
+//     "68677f86fd80cfe65e8a7a2a"
+//   ],
+//   hospitalName: "Apollo Hospital, Chennai",
+  
+//   status: "pending", // optional, default is "pending"
+// }
 {
-  requester: "68678616c88f307d7d1c5cc5",
+  requester: "68677f86fd80cfe65e8a7a2a",
   recipients: [
-    "68677f86fd80cfe65e8a7a2a"
+    "68678616c88f307d7d1c5cc5"
   ],
   hospitalName: "Apollo Hospital, Chennai",
-  
+  acceptedBy:"68678616c88f307d7d1c5cc5",
   status: "pending", // optional, default is "pending"
 }
 

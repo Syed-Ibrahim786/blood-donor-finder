@@ -23,11 +23,11 @@ export const ContextWrapper = ({children}) => {
   }, []);
 
 
-    return (
-        <AppContext.Provider value={{ LoginState , setLoginState , isAdmin , setIsAdmin}}>
+    // return (
+    //     <AppContext.Provider value={{ LoginState , setLoginState , isAdmin , setIsAdmin}}>
 
-    console.log(LoginState  )
-    console.log(token);
+    // console.log(LoginState  )
+    // console.log(token);
     
     return (
         <AppContext.Provider value={{ LoginState , setLoginState }}>

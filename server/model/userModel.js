@@ -34,6 +34,9 @@ const userSchema = mongoose.Schema({
         enum:["donor","user","admin"]
     }
 
+},
+ {
+  timestamps: true // ✅ This adds createdAt and updatedAt automatically
 })
 
 const DonorAndBenficiary = mongoose.model('DonorAndBenficiary',userSchema)

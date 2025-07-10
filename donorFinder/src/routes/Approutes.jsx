@@ -12,7 +12,7 @@ import Search from "../page/Search";
 import AdminPanel from "../page/AdminPanel";
 import ProtectedRoutes from "./ProtectedRoutes";
 import AppContext from "../context/AppContext";
-import App from "../App";
+
 import AdminLogin from "../page/Home/Login/AdminLogin";
 import AdminRoutes from "./AdminRoutes";
 import Dashboard from "../page/Home/Dashboard";

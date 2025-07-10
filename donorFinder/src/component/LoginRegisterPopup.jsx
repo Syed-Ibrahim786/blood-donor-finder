@@ -19,6 +19,7 @@ function LoginRegisterPopup({ message }) {
           <p>{message}</p>
         </div>
       </div>
+      </div>
       </motion.div>
   );
 }
