@@ -2,7 +2,7 @@ import React, { useContext, useState , useEffect} from 'react'
 import { Children } from 'react'
 import { createContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { FaAngleRight } from "fontawesome";
+
 
 const AppContext = createContext()
 
@@ -20,7 +20,7 @@ export const ContextWrapper = ({children}) => {
     }
   }, []);
 
-
+//fixed
     
 
     return (
