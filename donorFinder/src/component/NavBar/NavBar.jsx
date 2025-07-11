@@ -30,7 +30,7 @@ const NavBar = () => {
       <div className='text-white p-5 shadow-2xl bg-white'>
         <nav className='max-w-7xl flex  mx-auto justify-between '>
        <div className='my-auto'>
-         <NavLink to="/" className=' transition-all hover:scale-105' ><img className='w-30 md:w-50 ' src='/src/assets/BloodNet.svg' /></NavLink>
+         <NavLink to="/dashboard" className=' transition-all hover:scale-105' ><img className='w-30 md:w-50 ' src='/src/assets/BloodNet.svg' /></NavLink>
        </div>  
         {
           LoginState && (<ul className= {`flex items-center transition-all duration-300 ease-in-out`}>
