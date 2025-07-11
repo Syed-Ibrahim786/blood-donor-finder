@@ -14,9 +14,11 @@ function LoginRegisterPopup({ message }) {
       transition={{duration:0.3}}
       >
         <div className="text-center z-100 fixed right-0">
+        <div className="text-center fixed right-0">
         <div className="py-5 px-15 rounded-2xl mt-7 inline-block shadow-2xl">
           <p>{message}</p>
         </div>
+      </div>
       </div>
       </motion.div>
   );

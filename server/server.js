@@ -1,8 +1,9 @@
-console.log("bismillah")
+// console.log("bismillah")
 import express from 'express'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import authRoute from './route/authRoute.js'
+import cors from "cors"
 
 dotenv.config()
 
@@ -10,7 +11,7 @@ dotenv.config()
 const port = process.env.PORT
 const app = express()
 app.use(express.json())
-
+app.use(cors());
 app.use('/',authRoute)
 
 
