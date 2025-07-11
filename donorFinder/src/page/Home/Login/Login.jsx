@@ -9,9 +9,9 @@ import AppContext from '../../../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 
 
-const active = 'font-semibold bg-[#c2c2c2] px-5 rounded-2xl text-red-500 transition:all   duration-300 ease-in-out cursor-pointer text-black'
+const active = 'font-semibold bg-[#c2c2c2] px-5 rounded-2xl text-red-500 transition:all text-white duration-300 ease-in-out cursor-pointer '
 
-const inActive = 'font-semi-bold transition:all hover:outline-white hover:outline-1 px-5 rounded-2xl duration-300 ease-in-out'
+const inActive = 'font-semi-bold transition:all text-black duration-300 ease-in-out border-1 px-5 rounded-xl' 
 
 
 
