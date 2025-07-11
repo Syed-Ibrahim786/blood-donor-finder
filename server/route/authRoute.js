@@ -8,12 +8,18 @@ import {
     makeDonor,
     userDashboardController,
     donorDashboardController,
-    adminDashboardController } from '../controller/authController.js'
+    adminDashboardController,
+    verifyRefreshToken,
+    logout } from '../controller/authController.js'
 
 
 router.post('/register',registerUser)
 
 router.post('/login', loginUser)
+
+router.post('/refresh-token', verifyRefreshToken)
+
+router.post('/logout', logout)
 
 router.get('/search', protect, getDonor)
 

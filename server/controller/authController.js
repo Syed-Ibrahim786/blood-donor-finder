@@ -3,6 +3,7 @@ import BloodRequest from '../model/BloodRequest.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
+
 export async function registerUser(req, res){
     const { name, email, password, phone, city, bloodGroup, isDonor} = req.body;
     //have to validate 
@@ -20,6 +21,12 @@ export async function registerUser(req, res){
     res.status(200).json({message:"registration in db successfull "})
 }
 
+function createAccessToken(user){
+    const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
+    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'1m'})
+    return token
+}
+
 export async function loginUser(req, res){
     const {name, password} = req.body
     const user = await DonorAndBeneficiary.findOne({name:name}).select('+password')
@@ -32,9 +39,13 @@ export async function loginUser(req, res){
         return res.status(403).json({message:"invalid Password"})
     }
 
-    const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
-    const token = jwt.sign(payload,process.env.JWT_SECRET)
-    res.status(200).json({message:"login in db successfull and token generated", token:token, role:user.role})
+    // const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
+    const token = createAccessToken(user)
+    // const refreshToken = jwt.sign(payload,process.env.JWT_REFRESH_SECRET,{expiresIn:'10m'}) testingggggggg
+    const refreshToken = jwt.sign({ id: user._id },process.env.JWT_REFRESH_SECRET,{expiresIn:'20m'}) 
+    user.refreshToken.push(refreshToken)
+    await user.save()
+    res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role})
     
 }
 
@@ -165,3 +176,34 @@ endOfWeek.setHours(23, 59, 59, 999); // End of day
     
 }
 
+export async function verifyRefreshToken(req, res){
+    const {refreshToken} = req.body
+    if(!refreshToken) return res.status(401).json({message:"Refresh token required from verify token"})
+    try{
+        const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+        console.log(payload)
+        const user = await DonorAndBeneficiary.findById(payload.id)
+        console.log(user)
+        if(!user || !user.refreshToken.includes(refreshToken)){
+            return res.status(403).json({message:"invalid refresh token"})
+        }
+        const newAccessToken = createAccessToken(user)
+        res.status(200).json({accessToken:newAccessToken})
+    }catch(e){
+        res.status(403).json({message:"refresh token expired or invalid"})
+    }
+}
+
+export async function logout(req, res){
+    const {refreshToken} = req.body
+    if(!refreshToken) return res.status(401).json({message:"refresh token missing for logout"})
+    try{
+        const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+        const user = await DonorAndBeneficiary.findById(payload.id)
+        user.refreshToken = user.refreshToken.filter(t => t !== refreshToken)
+        await user.save()
+        res.status(204).json({message:"logout successful"})
+    }catch(e){
+        res.status(403).json({message:"token expired"})
+    }
+}
