@@ -207,3 +207,13 @@ export async function logout(req, res){
         res.status(403).json({message:"token expired"})
     }
 }
+
+export async function updateUser(req, res){
+    const {userId, city,bloodGroup, phone} = req.body
+    const user = DonorAndBeneficiary.find({_id:userId})
+    user.city = city
+    user.bloodGroup = bloodGroup
+    user.phone = phone
+    await user.save()
+    res.status(201).json({message:"update successful"})
+}
