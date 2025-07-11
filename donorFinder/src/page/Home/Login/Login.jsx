@@ -94,7 +94,7 @@ useEffect(() => {
     </AnimatePresence>
 
     <div className=' max-w-7xl h-screen flex  justify-center mx-auto'>
-      <div className='p-5 border-1 mt-50 w-fit h-fit rounded-2xl shadow-md text-white box'>
+      <div className='p-5 border-1 mt-30 w-fit h-fit rounded-2xl shadow-md text-white box'>
         <div className='flex justify-center gap-10'>
       <NavLink to="/login" className={({isActive})=> isActive? active : inActive}>Login</NavLink>
       <NavLink to="/register" className={({isActive})=> isActive? active : inActive}>Register</NavLink>
