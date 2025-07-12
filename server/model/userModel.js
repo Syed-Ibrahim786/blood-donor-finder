@@ -27,7 +27,17 @@ const userSchema = mongoose.Schema({
     isDonor:{
         type:Boolean,
         default:false
-    }
+    },
+    role:{
+        type:String,
+        default:"user",
+        enum:["donor","user","admin"]
+    },
+    refreshToken:[String]
+
+},
+ {
+  timestamps: true // ✅ This adds createdAt and updatedAt automatically
 })
 
 const DonorAndBenficiary = mongoose.model('DonorAndBenficiary',userSchema)
