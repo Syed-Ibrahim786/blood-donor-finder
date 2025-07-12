@@ -42,9 +42,7 @@ const Login = () => {
       if(res.status === 200){
         storeToken(res.data.token)
         setLoginState(true)
-
-        navigate('/search' ,{replace:true})
-
+        // navigate('/search' ,{replace:true})
       }
    }
   )

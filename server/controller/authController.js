@@ -46,7 +46,6 @@ export async function loginUser(req, res){
     user.refreshToken.push(refreshToken)
     await user.save()
     res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role})
-    
 }
 
 export async function getDonor(req, res){
