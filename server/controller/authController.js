@@ -7,7 +7,11 @@ import bcrypt from 'bcrypt'
 export async function registerUser(req, res){
     const { name, email, password, phone, city, bloodGroup, isDonor} = req.body; 
     //have to validate 
-    const user = DonorAndBeneficiary.find({email:email})
+    console.log( name, email, password, phone, city, bloodGroup, isDonor);
+    
+    const user = await DonorAndBeneficiary.findOne({email:email})
+    console.log(user);
+    
     if(user){
         return res.status(401).json({message:"user email already exist try with other email id"})
     }
