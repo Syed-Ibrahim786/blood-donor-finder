@@ -39,7 +39,8 @@ function Approutes() {
             <Route path="/dashboard/" element={<Dashboard />}> 
             
               <Route path="donor" element={<DonorDashboard/>}/>
-              <Route path="requester" element={<RequesterDashboard/>}/>
+              <Route path="user" element={<RequesterDashboard/>}/>  
+              {/* //changed from requester */}
 
             </Route>
 

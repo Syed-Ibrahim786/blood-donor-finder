@@ -20,14 +20,17 @@ const inActive = 'font-semi-bold transition:all text-black duration-300 ease-in-
 const Login = () => {
 
   const navigate = useNavigate()
+//////////////////////      to navigate based on role         //////////////////////
+ 
 
   const {setLoginState} = useContext(AppContext)
 
   const [message , setMessage] = useState()
 
 
-  const storeToken = (token) => {
+  const storeTokens = (token, refreshToken) => {
     localStorage.setItem("AuthToken",token)
+    localStorage.setItem("refreshToken",refreshToken)
     
   }
 
@@ -40,8 +43,15 @@ const Login = () => {
       console.log(res.data.message)
       setMessage(res.data.message)
       if(res.status === 200){
-        storeToken(res.data.token)
+        const{message, token, refreshToken, role} = res.data
+        storeTokens(token, refreshToken)
+
+        
+        
+        
         setLoginState(true)
+        
+        // navigate(`/dashboard/${role}`)
         // navigate('/search' ,{replace:true})
       }
    }
@@ -64,7 +74,7 @@ e.preventDefault()
   let emailInp = e.target.email.value;
 
 const cred = {
-  "name":emailInp,
+  "email":emailInp,
   "password":passInp
 }
 

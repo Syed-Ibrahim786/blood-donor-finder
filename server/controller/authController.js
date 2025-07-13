@@ -5,8 +5,13 @@ import bcrypt from 'bcrypt'
 
 
 export async function registerUser(req, res){
-    const { name, email, password, phone, city, bloodGroup, isDonor} = req.body;
+    const { name, email, password, phone, city, bloodGroup, isDonor} = req.body; 
     //have to validate 
+    const user = DonorAndBeneficiary.find({email:email})
+    if(user){
+        return res.status(401).json({message:"user email already exist try with other email id"})
+    }
+    //verify email
     const hashedPassword = bcrypt.hashSync(password,10)
     await DonorAndBeneficiary.create({
         name:name,
@@ -28,8 +33,9 @@ function createAccessToken(user){
 }
 
 export async function loginUser(req, res){
-    const {name, password} = req.body
-    const user = await DonorAndBeneficiary.findOne({name:name}).select('+password')
+    const {email, password} = req.body//testing with email instead of name.................................
+    console.log(email)
+    const user = await DonorAndBeneficiary.findOne({email:email}).select('+password')
     console.log(user)
     if(!user){
         return res.status(404).json({message:"user doesn't exist"})
@@ -44,7 +50,7 @@ export async function loginUser(req, res){
     // const refreshToken = jwt.sign(payload,process.env.JWT_REFRESH_SECRET,{expiresIn:'10m'}) testingggggggg
     const refreshToken = jwt.sign({ id: user._id },process.env.JWT_REFRESH_SECRET,{expiresIn:'20m'}) 
     user.refreshToken.push(refreshToken)
-    await user.save()
+    await user.save()  
     res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role})
 }
 
