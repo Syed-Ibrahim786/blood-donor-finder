@@ -5,6 +5,8 @@ import { useEffect } from 'react'
 import LocationGetter from '../../../services/LocationGetter'
 import { cityGetter } from '../../../services/LocationGetter'
 import {State ,City} from 'country-state-city'
+import RegisterRequest from '../../../services/RegisterRequest'
+import { Navigate } from 'react-router-dom'
 
 function Register() {
 
@@ -12,11 +14,47 @@ const active = 'font-semibold bg-[#c2c2c2] px-5 rounded-2xl text-red-500 transit
 
 const inActive = 'font-semi-bold transition:all text-black duration-300 ease-in-out border-1 px-5 rounded-xl' 
 
-const bloodType = ["A+" , "A-" , "B+" , "B-" , "AB+" , "AB-", "O+" , "O-" ]
+const bloodType = ["A+" , "A-" , "B+" , "B-" , "AB+" , "AB-", "O+" , "O-"]
 
+const reg = {
+  "name":"",
+  "email":"",
+  "blood":"",
+  "city":"",
+  "password":"",
+  "donor":false,
+  "phone":""
+
+}
 const [state , setState] = useState("")
 const [city , setCity] = useState()
 const [stateHolder , setStateHolder] = useState()
+
+
+
+const handleSubmit = (e) => {
+
+
+  e.preventDefault()
+
+
+  const regDetails = ({...reg , ["name"]:e.target.name.value , ["email"]:e.target.email.value ,  ["blood"]:e.target.blood.value ,  ["city"]:`${e.target.state.value},${e.target.city.value}`,["password"]:e.target.password.value, ["donor"]:e.target.donor.checked , ["phone"]:Number(e.target.phone.value)})
+
+
+    RegisterRequest(regDetails)
+    .then(res=>{
+      if(res.status===200){
+
+      }
+    }
+    )
+    .catch(err => {
+      console.log(err)
+    })
+
+  
+
+}
 
 const testFn = (e) => {
   setState(e.target.value)
@@ -39,6 +77,8 @@ setCity(cityGetter(state))
 
 
 
+
+
   return (
     <div>
 
@@ -50,10 +90,17 @@ setCity(cityGetter(state))
 
     </div>
       <div className="login-card text-center text-black ">
-        <div className='inline-flex flex-col gap-3 text-center p-5'>
+      <form onSubmit={(e) => {handleSubmit(e)}}>
+          <div className='inline-flex flex-col gap-3 text-center p-5'>
+
           <input name='name' placeholder='Enter your username' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+
           <input name='email' placeholder='Enter your email' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
-          <select  className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
+          <input name='phone' placeholder='Enter your Phone No' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+
+          <select name='blood'  className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
           <option value=""  hidden> -- Select Blood type --</option>
             {
   
@@ -63,7 +110,9 @@ setCity(cityGetter(state))
 
             }
           </select>
-          <select onClick={()=>{loadState()}} onChange={(e)=>{testFn(e)}} className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
+          <select name='state' onClick={()=>{loadState()}} onChange={(e)=>{testFn(e)}} className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
           <option value="" hidden> -- Select a state --</option>
             {
               stateHolder && (
@@ -73,7 +122,9 @@ setCity(cityGetter(state))
               )
             }
           </select>
-          <select  className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
+          <select name='city' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
           <option value=""  hidden> -- Select city --</option>
             {
               city&&(
@@ -83,11 +134,20 @@ setCity(cityGetter(state))
               )
             }
           </select>
-          <input name='password' placeholder='Enter your password' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+
+          <input type='password' name='password' placeholder='Enter your password' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+          
+
+              <input name='donor' type='checkbox' id='donorCheckBox'></input>
+            <label htmlFor="donorCheckBox"> I'm willing to be a donor </label>
+
+
         </div>
-        <div>
+                <div>
           <button className='text-white font-semibold bg-red-500 rounded-2xl p-2 px-5 transition:all hover:bg-red-600 duration-200 ease-in-out'> Register </button>
         </div>
+      </form>
+
         <div className='pt-5 '>
           <p>already have an account? <NavLink className="underline" to="/login">Login</NavLink></p>
         </div>

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "country-state-city": "^3.2.1",
+    "framer": "^2.4.1",
+    "nodeman": "^1.1.2",
+    "vite": "^7.0.4"
+  }
+}
