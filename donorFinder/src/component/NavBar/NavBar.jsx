@@ -10,11 +10,13 @@ import AppContext from '../../context/AppContext'
 
 const NavBar = () => {
 
-  const {LoginState , setLoginState} = useContext(AppContext);
+  const {LoginState ,name, setLoginState} = useContext(AppContext);
 
   const [isOpen, setOpen] = useState(true)
-
+  
   const location = useLocation()
+
+  const {role} = useContext(AppContext)
 
   const active = 'font-semibold text-white border-b-2 pb-1 text-red-500 '
 
@@ -35,7 +37,7 @@ const NavBar = () => {
        </div>  
         {
           LoginState && (<ul className= {`flex items-center transition-all duration-300 ease-in-out`}>
-           <li className='text-black'>Hello User</li>
+           <li className='text-black'>Hello {name}</li>
             <li><NavLink onClick={()=>{signout()}} className="bg-white text-red-500 px-5 py-3 rounded-xl">Sign Out</NavLink></li>
             
         </ul>)

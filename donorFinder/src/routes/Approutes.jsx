@@ -23,6 +23,8 @@ function Approutes() {
 
   const location = useLocation();
 
+  const{role} = useContext(AppContext)
+
   const {LoginState} = useContext(AppContext)
 
   return (
@@ -60,7 +62,7 @@ function Approutes() {
                 {" "}
                 <Login />
               </motion.div>
-              ) : <Navigate to="/dashboard/donor" ></Navigate>
+              ) : <Navigate to={`/dashboard/${role}`} ></Navigate>
             }
           />
 

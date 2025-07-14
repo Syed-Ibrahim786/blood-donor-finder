@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect } from 'react'
 import LocationGetter from '../../../services/LocationGetter'
@@ -9,6 +9,8 @@ import RegisterRequest from '../../../services/RegisterRequest'
 import { Navigate } from 'react-router-dom'
 
 function Register() {
+
+const navigate = useNavigate()
 
 const active = 'font-semibold bg-[#c2c2c2] px-5 rounded-2xl text-red-500 transition:all text-white duration-300 ease-in-out cursor-pointer '
 
@@ -26,6 +28,7 @@ const reg = {
   "phone":""
 
 }
+const[loadingMessage, setLoadingMessage] = useState("")
 const [state , setState] = useState("")
 const [city , setCity] = useState()
 const [stateHolder , setStateHolder] = useState()
@@ -36,20 +39,25 @@ const handleSubmit = (e) => {
 
 
   e.preventDefault()
+  setLoadingMessage("signing in...")
 
-
-  const regDetails = ({...reg , ["name"]:e.target.name.value , ["email"]:e.target.email.value ,  ["blood"]:e.target.blood.value ,  ["city"]:`${e.target.state.value},${e.target.city.value}`,["password"]:e.target.password.value, ["donor"]:e.target.donor.checked , ["phone"]:Number(e.target.phone.value)})
+  const regDetails = ({...reg , ["name"]:e.target.newName.value , ["email"]:e.target.newEmail.value ,  ["blood"]:e.target.blood.value ,  ["city"]:`${e.target.state.value},${e.target.city.value}`,["password"]:e.target.newPassword.value, ["donor"]:e.target.donor.checked , ["phone"]:Number(e.target.phone.value)})
 
 
     RegisterRequest(regDetails)
     .then(res=>{
-      if(res.status===200){
-
+      if(res.status===201){
+        console.log(res)
+        setLoadingMessage("")
+        navigate('/login')
       }
     }
     )
     .catch(err => {
       console.log(err)
+      if(err.response.status === 401){
+        setLoadingMessage("Email already exist")
+      }
     })
 
   
@@ -90,16 +98,20 @@ setCity(cityGetter(state))
 
     </div>
       <div className="login-card text-center text-black ">
-      <form onSubmit={(e) => {handleSubmit(e)}}>
-          <div className='inline-flex flex-col gap-3 text-center p-5'>
+      <form autoComplete='off' onSubmit={(e) => {handleSubmit(e)}}>
 
-          <input name='name' placeholder='Enter your username' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+<div className='2xl:flex my-5 sm:flex-col'>
+<div className='inline-flex flex-col gap-3 text-center p-5'>
 
-          <input name='email' placeholder='Enter your email' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+          <input name='newName' type="text" autoComplete="off" placeholder='Enter your username' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+
+          <input name='newEmail' autoComplete='off' placeholder='Enter your email' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
 
           <input name='phone' placeholder='Enter your Phone No' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
-
+</div>
+<div className='inline-flex flex-col gap-3 text-center ' >
           <select name='blood'  className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out' placeholder="select state">
+
 
           <option value=""  hidden> -- Select Blood type --</option>
             {
@@ -135,16 +147,22 @@ setCity(cityGetter(state))
             }
           </select>
 
-          <input type='password' name='password' placeholder='Enter your password' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
-          
+          <input type='password' name='newPassword' autoComplete='new-password' placeholder='Enter your password' className='outline-0 border-b-1 p-2 transition:all hover:border-b-2 duration-100 ease-in-out'/>
+</div>
 
+  </div>        
+          
+            <div className=' my-5'>
               <input name='donor' type='checkbox' id='donorCheckBox'></input>
             <label htmlFor="donorCheckBox"> I'm willing to be a donor </label>
+            </div>
+              
 
 
-        </div>
+        
                 <div>
-          <button className='text-white font-semibold bg-red-500 rounded-2xl p-2 px-5 transition:all hover:bg-red-600 duration-200 ease-in-out'> Register </button>
+          <button className='text-white font-semibold bg-red-500 rounded-2xl p-2 px-5 transition:all hover:bg-red-300 duration-200 ease-in-out'> Register </button>
+          <p className=' font-light text-sm text-red-600'>{loadingMessage}</p>
         </div>
       </form>
 

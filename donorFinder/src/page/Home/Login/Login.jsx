@@ -22,9 +22,9 @@ const Login = () => {
   const navigate = useNavigate()
 //////////////////////      to navigate based on role         //////////////////////
  
-
-  const {setLoginState} = useContext(AppContext)
-
+  
+  const {setLoginState, setRole, setName} = useContext(AppContext)
+  
   const [message , setMessage] = useState()
 
 
@@ -43,13 +43,15 @@ const Login = () => {
       console.log(res.data.message)
       setMessage(res.data.message)
       if(res.status === 200){
-        const{message, token, refreshToken, role} = res.data
+        const{message, token, refreshToken, role,name} = res.data
         storeTokens(token, refreshToken)
 
-        
+        console.log(res.data)
         
         
         setLoginState(true)
+        setName(name)
+        setRole(role)
         
         // navigate(`/dashboard/${role}`)
         // navigate('/search' ,{replace:true})

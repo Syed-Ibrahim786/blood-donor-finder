@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import AppContext from "../../context/AppContext";
 
 function SlidingMenu() {
   const [menu, setMenu] = useState(false);
+  const{name} = useContext(AppContext)
 
   const handleToggle = () => {
     if (!menu) {
@@ -29,7 +31,7 @@ function SlidingMenu() {
         <div className="">
           <div className="">
             <div className="h-40 w-40 bg-[#a8a8a8]  rounded-full m-5"></div>
-          <div className="pb-5 shadow-xl">Hello UserName</div>
+          <div className="pb-5 shadow-xl">Hello {name}</div>
           </div>
 
           <div className="flex flex-col justify-between items-start m-5 ">
