@@ -6,8 +6,8 @@ import { useEffect, useState } from "react"
 
 
 export default function RequesterDashboard() {
-  const [requests, setRequests] = useState([])
-
+  // const [requests, setRequests] = useState([])React uses the initial value you gave useState() to infer the data type (in plain JavaScript or JSX — no TypeScript involved).
+  const[requests,setRequests] = useState({ pending:[], fulfilled:[]})
   useEffect(() => {
     async function fetchData() {
       try {
@@ -18,9 +18,10 @@ export default function RequesterDashboard() {
         })
         const data = await response.json()
         console.log("✅ Dashboard data:", data)
+        // console.log(data.pending)
 
         // Assuming API returns { requests: [...] }
-        setRequests(data.requests || [])
+        setRequests(data || [])
       } catch (error) {
         console.error("❌ Error fetching dashboard data:", error)
       }
@@ -42,7 +43,7 @@ export default function RequesterDashboard() {
       status: "accepted"
     }
   ]
-
+ console.log(requests)
   return (
     
 <div className="">
@@ -67,7 +68,7 @@ export default function RequesterDashboard() {
           <Card key={index}>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
-                🩸 {req.bloodGroup}
+                🩸 {req.bloodGroup || "--"}
                 <Badge
                   variant={
                     req.status === "pending"
@@ -77,13 +78,13 @@ export default function RequesterDashboard() {
                       : "destructive"
                   }
                 >
-                  {req.status}
+                  {req.status || "--"}
                 </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="text-sm space-y-1">
-              <p><strong>Hospital:</strong> {req.hospitalName}</p>
-              <p><strong>Requested On:</strong> {istTime}</p>
+              <p><strong>Hospital:</strong> {req.hospitalName || "--"}</p>
+              <p><strong>Requested On:</strong> {istTime || "--"}</p>
             </CardContent>
           </Card>
         )
