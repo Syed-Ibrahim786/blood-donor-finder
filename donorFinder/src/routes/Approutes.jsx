@@ -83,7 +83,7 @@ function Approutes() {
             }
           />
 
-          <Route element={<AdminPanel/>}></Route>
+          <Route path="/dashboard/admin" element={<AdminPanel/>}></Route>
           <Route path="/admin" element={<AdminLogin/>}></Route>
 
         </Routes>

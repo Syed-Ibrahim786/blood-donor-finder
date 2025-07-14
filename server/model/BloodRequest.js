@@ -49,6 +49,10 @@ const bloodRequestSchema = new mongoose.Schema({ // ✅ Use `new mongoose.Schema
     ref: 'DonorAndBenficiary',
     required: true
   }],
+  bloodGroup:{
+    type:String,
+    required:true
+  },
   status: {
     type: String,
     enum: ['pending', 'fulfilled', 'cancelled'],
@@ -56,8 +60,8 @@ const bloodRequestSchema = new mongoose.Schema({ // ✅ Use `new mongoose.Schema
   },
   acceptedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'DonorAndBenficiary',
-    default: null // ✅ Should not be required, since it's null initially
+    ref: 'DonorAndBenficiary'
+     // ✅ Should not be required, since it's null initially
   },
   hospitalName: {
     type: String,
@@ -67,7 +71,7 @@ const bloodRequestSchema = new mongoose.Schema({ // ✅ Use `new mongoose.Schema
     type: Date,
     default: Date.now
   }
-});
+},{timestamps : true});
 
 const BloodRequest = mongoose.model('BloodRequest', bloodRequestSchema); // ✅ Capitalize model name by convention
 

@@ -1,8 +1,13 @@
+import TopCitiesChart from '@/components/TopCitiesChart'
 import React from 'react'
 
 function AdminPanel() {
   return (
-    <div>AdminPanel</div>
+    <>
+     <div>AdminPanel</div>
+     <TopCitiesChart/>
+    </>
+   
   )
 }
 

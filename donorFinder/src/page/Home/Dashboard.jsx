@@ -13,7 +13,8 @@ const location = useLocation()
     console.log(location.pathname)
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-rose-100 via-white to-rose-50 p-4">
+
       <SlidingMenu/>
       <div className='text-center max-w-7xl mx-auto'>
 
@@ -26,7 +27,7 @@ const location = useLocation()
             <Outlet/>
         </div>
     </div>
-    </>
+    </div>
   )
 }
 

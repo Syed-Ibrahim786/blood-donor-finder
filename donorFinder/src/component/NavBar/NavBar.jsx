@@ -30,7 +30,7 @@ const NavBar = () => {
 
   return (
    
-      <div className='text-white p-5 shadow-2xl bg-white'>
+      <div className='text-white p-5  shadow-2xl bg-transparent'>
         <nav className='max-w-7xl flex  mx-auto justify-between '>
        <div className='my-auto'>
          <NavLink to="/dashboard" className=' transition-all hover:scale-105' ><img className='w-30 md:w-50 ' src='/src/assets/BloodNet.svg' /></NavLink>

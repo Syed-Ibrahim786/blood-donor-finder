@@ -12,7 +12,7 @@ export async function registerUser(req, res){
     const user = await DonorAndBeneficiary.findOne({email:email})
     console.log(user);
     
-    if(user){
+    if(user != null){
         return res.status(401).json({message:"user email already exist try with other email id"})
     }
     //verify email
@@ -27,17 +27,17 @@ export async function registerUser(req, res){
         isDonor:isDonor 
     })
     
-    res.status(200).json({message:"registration in db successfull "})
+    res.status(201).json({message:"registration in db successfull "})
 }
 
 function createAccessToken(user){
     const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
-    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'1m'})
+    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'15m'})
     return token
 }
 
 export async function loginUser(req, res){
-    const {email, password} = req.body//testing with email instead of name.................................
+    const {email, password} = req.body
     console.log(email)
     const user = await DonorAndBeneficiary.findOne({email:email}).select('+password')
     console.log(user)
@@ -49,13 +49,12 @@ export async function loginUser(req, res){
         return res.status(403).json({message:"invalid Password"})
     }
 
-    // const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
     const token = createAccessToken(user)
-    // const refreshToken = jwt.sign(payload,process.env.JWT_REFRESH_SECRET,{expiresIn:'10m'}) testingggggggg
+   
     const refreshToken = jwt.sign({ id: user._id },process.env.JWT_REFRESH_SECRET,{expiresIn:'20m'}) 
     user.refreshToken.push(refreshToken)
     await user.save()  
-    res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role})
+    res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role, name:user.name})
 }
 
 export async function getDonor(req, res){
@@ -90,7 +89,7 @@ export async function userDashboardController(req, res){
     try{
         const [pendingRequest, fulfilledRequest] = await Promise.all([
         BloodRequest.find({requester:req.user.id,status:"pending"}),
-        BloodRequest.find({requester:req.user.id,status:"fulfilled"})
+        BloodRequest.find({requester:req.user.id,status:"fulfilled"}).populate("acceptedBy","name")
     ])
     res.status(200).json({
       pending: pendingRequest,

@@ -16,13 +16,17 @@ const userSchema = mongoose.Schema({
         select:false
     },
     phone:{
-        type:String
+        type:String,
+        require:true
+        
     },
     city:{
-        type:String
+        type:String,
+        require:true
     },
     bloodGroup:{
-        type:String
+        type:String,
+        require:true
     },
     isDonor:{
         type:Boolean,
