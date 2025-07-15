@@ -35,7 +35,7 @@ export function protect(req, res, next){
 export function verifyRole(requiredRole) {
   return (req, res, next) => {
     try {
-      if (req.user.role !== requiredRole) {
+      if (!requiredRole.includes(req.user.role)) {
         return res.status(403).json({ message: "Access denied: insufficient role" });
       }
       next();

@@ -24,11 +24,11 @@ router.post('/logout', logout)
 
 router.get('/search', protect, getDonor)
 
-router.get('/admin/dashboard', protect,verifyRole("admin"), adminDashboardController)
+router.get('/admin/dashboard', protect,verifyRole(["admin"]), adminDashboardController)
 
-router.get('/user/dashboard',protect,verifyRole("user"), userDashboardController)
+router.get('/user/dashboard',protect,verifyRole(["user"]), userDashboardController)
 
-router.get('/donor/dashboard',protect,verifyRole("donor"), donorDashboardController)
+router.get('/donor/dashboard',protect,verifyRole(["donor","user"]), donorDashboardController)
 
 router.put('/update', updateUser)
 
