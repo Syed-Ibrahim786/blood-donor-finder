@@ -37,13 +37,15 @@ export default function TopCitiesChart() {
         })
         const data = await res.json()
         console.log("📊 Top cities data:", data.topCities)
-        setResponses(data.topCities || [])
+        const topThree = data.topCities?.slice(0,3)
+        setResponses(topThree || [])
       } catch (err) {
         console.error("❌ Error loading chart:", err)
       }
     }
 
     fetchData()
+    console.log(responses)
   }, [])
 
   return (
