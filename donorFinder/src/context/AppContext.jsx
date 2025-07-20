@@ -15,12 +15,12 @@ export const ContextWrapper = ({children}) => {
     
     const token = localStorage.getItem("AuthToken");
 
-      useEffect(() => {
-    const token = localStorage.getItem("AuthToken");
-    if (token) {
-      setLoginState(true);
-    }
-  }, []);
+  //     useEffect(() => {
+  //   const token = localStorage.getItem("AuthToken");
+  //   if (token) {
+  //     setLoginState(true);
+  //   }
+  // }, []);
 
 //fixed
     

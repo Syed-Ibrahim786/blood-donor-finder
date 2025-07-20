@@ -57,9 +57,9 @@ export async function loginUser(req, res){
     res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role, name:user.name})
 }
 
-export async function getDonor(req, res){
+export async function getDonors(req, res){
     const {city, bloodGroup} = req.query
-    const donorsAfterSearch = await DonorAndBeneficiary.find({city:city, bloodGroup:bloodGroup}).select('-_id -__v -isDonor')
+    const donorsAfterSearch = await DonorAndBeneficiary.find({city:city, bloodGroup:bloodGroup, isDonor:true}).select('-_id -__v -isDonor')
     console.log(donorsAfterSearch)
     console.log(req.user)
     try{

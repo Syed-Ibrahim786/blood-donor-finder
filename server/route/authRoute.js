@@ -4,14 +4,14 @@ const router = express.Router()
 import { 
     registerUser,
     loginUser,
-    getDonor,
     makeDonor,
     userDashboardController,
     donorDashboardController,
     adminDashboardController,
     verifyRefreshToken,
     logout,
-    updateUser } from '../controller/authController.js'
+    updateUser, 
+    getDonors} from '../controller/authController.js'
 
 
 router.post('/register',registerUser)
@@ -22,7 +22,7 @@ router.post('/refresh-token', verifyRefreshToken)
 
 router.post('/logout', logout)
 
-router.get('/search', protect, getDonor)
+router.get('/search', protect, getDonors)
 
 router.get('/admin/dashboard', protect,verifyRole(["admin"]), adminDashboardController)
 

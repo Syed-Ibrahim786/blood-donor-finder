@@ -8,16 +8,10 @@ export default function LocationGetter() {
     const state = State.getStatesOfCountry('IN');
     return state
 
-
-  return (
-    <></>
-  )
 }
 
-export  function cityGetter(state) {
-
+export function cityGetter(state) {
         let code ;
-
         const stateValue = State.getStatesOfCountry('IN');
 
         stateValue.forEach((item)=>{

@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function RequesterDashboard() {
   const [requests, setRequests] = useState({ pending: [], fulfilled: [] });
@@ -27,7 +28,17 @@ export default function RequesterDashboard() {
   }, []);
 
   return (
-    <>
+    <div className=" p-10 ">
+    <div className="flex justify-between items-center mb-10">
+  <h1 className="text-2xl font-bold">Dashboard</h1>
+  <Link
+    to="/find-donors"
+    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow"
+  >
+    🔍 Find Donors
+  </Link>
+</div>
+
       {/* Pending Requests */}
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">My Blood Requests (Pending)</h2>
@@ -66,13 +77,13 @@ export default function RequesterDashboard() {
 
         {/* Desktop View: Table */}
         <div className="hidden md:block">
-          <table className="w-full text-left border">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2">Blood Group</th>
-                <th className="p-2">Hospital</th>
-                <th className="p-2">Requested On</th>
-                <th className="p-2">Status</th>
+          <table className="w-full border border-gray-300 shadow-md text-sm">
+            <thead className="bg-fuchsia-950 text-white">
+              <tr className="">
+                <th className="p-2 text-left">Blood Group</th>
+                <th className="p-2 text-left">Hospital</th>
+                <th className="p-2 text-left">Requested On</th>
+                <th className="p-2 text-left">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -133,13 +144,13 @@ export default function RequesterDashboard() {
 
         {/* Desktop View: Table */}
         <div className="hidden md:block">
-          <table className="w-full text-left border">
+          <table className="w-full border border-gray-300 shadow-md text-sm">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2">Blood Group</th>
-                <th className="p-2">Hospital</th>
-                <th className="p-2">Accepted By</th>
-                <th className="p-2">Fulfilled On</th>
+              <tr className="bg-fuchsia-950 text-white">
+                <th className="p-2 text-left">Blood Group</th>
+                <th className="p-2 text-left">Hospital</th>
+                <th className="p-2 text-left">Accepted By</th>
+                <th className="p-2 text-left">Fulfilled On</th>
               </tr>
             </thead>
             <tbody>
@@ -158,6 +169,6 @@ export default function RequesterDashboard() {
           </table>
         </div>
       </section>
-    </>
+    </div>
   );
 }

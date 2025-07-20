@@ -46,7 +46,7 @@ function Approutes() {
 
             </Route>
 
-            <Route />
+            <Route path="/find-donors" element={<Search/>}/>
           </Route>
 
           <Route
