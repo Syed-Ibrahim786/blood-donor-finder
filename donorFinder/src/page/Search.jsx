@@ -2,13 +2,15 @@ import LocationGetter, {cityGetter} from '@/services/LocationGetter'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Search() {
+
+export default function Search() {
   const[allState, setAllState] = useState([])
   const[selectedState, setSelectedState] = useState('')
   const[city, setCity] = useState([])
   const[selectedCity, setSelectedCity] = useState('')
   const[bloodGroup, setBloodGroup] = useState('')
   const[donors, setDonors] = useState([])
+  const [selectedDonors, setSelectedDonors] = useState([])
 
   const navigate = useNavigate()
 
@@ -45,7 +47,31 @@ function Search() {
   
 
  }
- console.log(donors)
+ console.log(selectedDonors)
+
+
+ function selectDonors(e){
+  const userId = e.target.parentNode.getAttribute("userid")
+  console.log(userId)
+
+  if(e.target.parentNode.classList.contains("border-2")){
+
+    e.target.parentNode.className = "border-t text-[10px] md:text-sm" 
+    
+    const currentSelectedDonors = selectedDonors.filter((eachDonor) => eachDonor !== userId)
+    setSelectedDonors(currentSelectedDonors)
+
+  }else{
+
+    e.target.parentNode.className = "text-[10px] md:text-sm border-2 border-red-400 rounded-3xl"
+    
+    setSelectedDonors([...selectedDonors, e.target.parentNode.getAttribute("userid")])
+  }
+ }
+
+function alertDonor(){
+  
+ }
   return (
     <div className=''>
     <div className=' bg-fuchsia-700 p-5 flex justify-between flex-col lg:flex-row'>
@@ -71,7 +97,9 @@ function Search() {
         }
       </select>
 
-      <select className={dropdownStyle} onChange={(e) =>{setBloodGroup(e.target.value)}}>
+      <select className={dropdownStyle} onChange={(e) =>{
+        setBloodGroup(e.target.value)
+        }}>
         <option value="">select blood Group</option>
         { bloodGroups && (
           bloodGroups.map((blood, index) => (
@@ -99,7 +127,7 @@ function Search() {
               {donors.map((donor, index) => {
                 
                 return (
-                  <tr key={index} className="border-t text-[10px] md:text-sm">
+                  <tr key={index} userId={donor._id}   onClick={selectDonors} className="border-t text-[10px] md:text-sm ">
                     <td className="p-2">{donor.bloodGroup}</td>
                     <td className="p-2">{donor.name}</td>
                     <td className="p-2">{donor.phone}</td>
@@ -107,13 +135,24 @@ function Search() {
                   </tr>
                 );
               })}
+
+              
             </tbody>
           </table>
         </div>
     ) }
-
+<button onClick={(e) => {
+  e.target.nextElementSibling.className += "block"
+}} className=' bg-orange-600 p-4 rounded-2xl text-black shadow-red-600 shadow-2xl absolute bottom-20 right-10' title='donor alerting button'>Alert</button>
+<form onSubmit={(e) => e.preventDefault()} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
+  <label htmlFor="phoneInput">Enter Phone Number<p className='text-[10px]'>Donor will contact from this and confirm</p></label>
+  <input required type="phone" id='phoneInput' className='border-1 border-black block w-full h-10 my-2'/>
+  <label htmlFor="cityInput">Enter your City<p className='text-[10px]'>enter where you are requesting from</p></label>
+  <input required type="text" id='cityInput' className='border-1 border-black block w-full h-10 my-2'/>
+  <label htmlFor="hospitalInput">Enter Hospital name<p className='text-[10px]'>where donor can donate</p></label>
+  <input required type="text" className='border-1 border-black block w-full h-10 my-2'/>
+  <button type='submit' className='bg-orange-500 p-2 rounded-2xl text-white block w-[110px]' title='alert confirmation'>Alert Donors</button>
+</form>
   </div>
   )
 }
-
-export default Search
