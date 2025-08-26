@@ -4,16 +4,29 @@ import { createContext } from 'react'
 import { useParams } from 'react-router-dom'
 
 
+
 const AppContext = createContext()
 
 export const ContextWrapper = ({children}) => {
 
+      const[selectedDonor , setSelectedDonor] = useState([])
     const [isAdmin , setIsAdmin] = useState(false);
     const[role,setRole] = useState("user")
     const[name, setName] = useState("")
     const [LoginState , setLoginState ] = useState(false)  
+    const [userId , setUserId] = useState("")
+    const [alertToggle , setAlertToggle] = useState(false)
+      const[bloodGroup, setBloodGroup] = useState('')
     
     const token = localStorage.getItem("AuthToken");
+
+    const closeAlert = () =>{
+        setAlertToggle(false)
+    }
+    const openAlert = () =>{
+        setAlertToggle(true)
+    }
+
 
   //     useEffect(() => {
   //   const token = localStorage.getItem("AuthToken");
@@ -23,10 +36,13 @@ export const ContextWrapper = ({children}) => {
   // }, []);
 
 //fixed
+
+
+
     
 
     return (
-        <AppContext.Provider value={{  LoginState , setLoginState , isAdmin , setIsAdmin, role, setRole, setName, name}}>
+        <AppContext.Provider value={{ bloodGroup, setBloodGroup , userId ,openAlert , closeAlert, setUserId , selectedDonor , setSelectedDonor , LoginState , setLoginState , alertToggle , setAlertToggle, isAdmin , setIsAdmin, role, setRole, setName, name}}>
             {children}
         </AppContext.Provider>
     )
