@@ -1,6 +1,8 @@
 import LocationGetter, {cityGetter} from '@/services/LocationGetter'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+// import { socket } from './DonorDashboard'
+import io from 'socket.io-client'
 
 
 export default function Search() {
@@ -17,10 +19,39 @@ export default function Search() {
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const dropdownStyle = 'bg-white rounded p-2 w-[200px] max-w-full truncate '
   
+const token = localStorage.getItem("AuthToken");
+    if(!token){
+      navigate('/login')
+    }
+
+  const socket = io("http://localhost:8000",
+    {
+      auth:{
+        token
+      }
+    }
+  )
+
   const loadState = () =>{
     setAllState(LocationGetter())
   }
 
+
+  useEffect(() => {
+    
+    console.log("token exist")
+
+    
+//  if (!token) return;///////////////  should call /refresh-token right?///////
+   
+     socket.on('connect', () => {
+            console.log('Connected with socket ID:', socket.id); // Access the socket ID
+        });
+         console.log("connect socket works")
+        
+    socket.emit("register", {token, id:socket.id})
+     console.log("register works")
+  },[])
   useEffect(()=>{
     setCity(cityGetter(selectedState))
     console.log(allState)
@@ -32,6 +63,8 @@ export default function Search() {
     navigate('/login')
   }
   try{
+      
+
     const res = await fetch(`http://localhost:8000/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
     {
       headers:{
@@ -39,8 +72,10 @@ export default function Search() {
       }
     }
   );
+  console.log(res.status)
   const data = await res.json();
   setDonors(data)
+  console.log(donors)
   }catch(e){
     console.log(e)
   }
@@ -69,8 +104,47 @@ export default function Search() {
   }
  }
 
-function alertDonor(){
+async function alertDonor(){
+  const hospitalName = document.querySelector("#hospitalInput").value
+  console.log(hospitalName) 
+  const phone = document.querySelector("#phoneInput").value
+  const city = document.querySelector("#cityInput").value
+  const token = localStorage.getItem("AuthToken");
+  if(!token){
+    navigate('/login')
+  }
+  try{
+    const res = await fetch("http://localhost:8000/alertDonor",
+    {
+      method:"POST",
+      headers: {
+      "Content-Type": "application/json" ,
+      authorization:`Bearer ${token}`
+    },
+      body:JSON.stringify({
+        selectedDonors,
+        bloodGroup,
+        hospitalName,
+        city,
+        phone
+      })
+    }
+  )
+  if(res.status === 201){
+    console.log("alert created")
+  }
+  }catch(e){
+    console.log("error in creating alert ",e)
+  }
+
   
+  socket.emit("alert donors", {
+        selectedDonors,
+        bloodGroup,
+        hospitalName,
+        city,
+        phone
+      })
  }
   return (
     <div className=''>
@@ -124,7 +198,7 @@ function alertDonor(){
               </tr>
             </thead>
             <tbody>
-              {donors.map((donor, index) => {
+              {donors.length > 0 && donors.map((donor, index) => {
                 
                 return (
                   <tr key={index} userId={donor._id}   onClick={selectDonors} className="border-t text-[10px] md:text-sm ">
@@ -144,13 +218,21 @@ function alertDonor(){
 <button onClick={(e) => {
   e.target.nextElementSibling.className += "block"
 }} className=' bg-orange-600 p-4 rounded-2xl text-black shadow-red-600 shadow-2xl absolute bottom-20 right-10' title='donor alerting button'>Alert</button>
-<form onSubmit={(e) => e.preventDefault()} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
+<form onSubmit={(e) => {
+  e.preventDefault()
+  alertDonor()
+
+}} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
+  <img src="donorFinder\src\assets\cancel.png" alt="cancel button click to goback and select donors" onClick={(e) => {
+
+    e.target.parentNode.className = "bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden"
+  }} />
   <label htmlFor="phoneInput">Enter Phone Number<p className='text-[10px]'>Donor will contact from this and confirm</p></label>
   <input required type="phone" id='phoneInput' className='border-1 border-black block w-full h-10 my-2'/>
   <label htmlFor="cityInput">Enter your City<p className='text-[10px]'>enter where you are requesting from</p></label>
   <input required type="text" id='cityInput' className='border-1 border-black block w-full h-10 my-2'/>
   <label htmlFor="hospitalInput">Enter Hospital name<p className='text-[10px]'>where donor can donate</p></label>
-  <input required type="text" className='border-1 border-black block w-full h-10 my-2'/>
+  <input required type="text" id='hospitalInput' className='border-1 border-black block w-full h-10 my-2'/>
   <button type='submit' className='bg-orange-500 p-2 rounded-2xl text-white block w-[110px]' title='alert confirmation'>Alert Donors</button>
 </form>
   </div>

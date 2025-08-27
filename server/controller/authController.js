@@ -16,7 +16,7 @@ export async function registerUser(req, res){
         return res.status(401).json({message:"user email already exist try with other email id"})
     }
     //verify email
-    const hashedPassword = bcrypt.hashSync(password,10)
+    const hashedPassword = await bcrypt.hash(password,10)
     await DonorAndBeneficiary.create({
         name:name,
         email:email,
@@ -59,13 +59,14 @@ export async function loginUser(req, res){
 
 export async function getDonors(req, res){
     const {city, bloodGroup} = req.query
-    const donorsAfterSearch = await DonorAndBeneficiary.find({city:city, bloodGroup:bloodGroup, isDonor:true}).select('-_id -__v -isDonor')
-    console.log(donorsAfterSearch)
-    console.log(req.user)
+    const donorsAfterSearch = await DonorAndBeneficiary.find({city:city, bloodGroup:bloodGroup, isDonor:true}).select('-__v -isDonor').lean()
+    // console.log(donorsAfterSearch)
+    // console.log(req.user)
     try{
         if(donorsAfterSearch.length === 0){
             return res.status(404).json({message:"🥺 No Donors available!"})
         }
+        console.log(donorsAfterSearch)
         return res.status(200).send(donorsAfterSearch)
     }catch(e){
         console.error(e)
@@ -88,8 +89,8 @@ export async function makeDonor(req, res){
 export async function userDashboardController(req, res){
     try{
         const [pendingRequest, fulfilledRequest] = await Promise.all([
-        BloodRequest.find({requester:req.user.id,status:"pending"}),
-        BloodRequest.find({requester:req.user.id,status:"fulfilled"}).populate("acceptedBy","name")
+        BloodRequest.find({requester:req.user.id,status:"pending"}).lean(),
+        BloodRequest.find({requester:req.user.id,status:"fulfilled"}).populate("acceptedBy","name").lean()
     ])
     res.status(200).json({
       pending: pendingRequest,
@@ -108,12 +109,12 @@ export async function donorDashboardController(req, res) {
         BloodRequest.find({ recipients:req.user.id, status:"pending" })
         .select('-recipients')
         .populate("requester","name phone")
-        .sort({createdAt: -1}),
+        .sort({createdAt: -1}).lean(),
         BloodRequest.find({ acceptedBy:req.user.id })
         .select('-recipients')
         .populate("requester","name phone")
-        .sort({createdAt: -1}),
-        DonorAndBeneficiary.find({ _id:req.user.id }).select('+city +phone +bloodGroup')
+        .sort({createdAt: -1}).lean(),
+        DonorAndBeneficiary.find({ _id:req.user.id }).select('+city +phone +bloodGroup').lean()
     ])
     console.log(req.user.id)
 
@@ -147,7 +148,7 @@ endOfWeek.setHours(23, 59, 59, 999); // End of day
         DonorAndBeneficiary.find({
       isDonor: true,
       createdAt: { $gte: startOfWeek, $lte: endOfWeek }
-    }),
+    }).lean(),
     DonorAndBeneficiary.aggregate([
         {
             $group:{
@@ -217,11 +218,32 @@ export async function logout(req, res){
 }
 
 export async function updateUser(req, res){
-    const {userId, city,bloodGroup, phone} = req.body
-    const user = DonorAndBeneficiary.find({_id:userId})
+    const {userId, name, city,bloodGroup, phone} = req.body
+    const user = await DonorAndBeneficiary.findById({_id:userId})
+    user.name = name
     user.city = city
     user.bloodGroup = bloodGroup
     user.phone = phone
     await user.save()
     res.status(201).json({message:"update successful"})
+}
+
+
+export async function alertDonorController(req, res){
+    const requester = req.user.id
+    const { selectedDonors, bloodGroup, hospitalName, city, phone} = req.body
+    try{
+        await BloodRequest.create({
+        requester,
+        recipients: selectedDonors,
+        bloodGroup,
+        hospitalName,
+        city,
+        phone
+    })
+    res.status(201).json({message:"Alert Sent to Donors"})
+
+    }catch(e){
+        res.status(500).json({message:"Couldnt send alert"})
+    }
 }
