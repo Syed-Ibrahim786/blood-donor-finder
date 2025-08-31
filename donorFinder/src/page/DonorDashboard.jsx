@@ -4,8 +4,21 @@ import {
   buildStyles
 } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import io from 'socket.io-client'
 
-function DonorDashboard() {
+
+
+const token = localStorage.getItem("AuthToken");
+//  if (!token) return;///////////////  should call /refresh-token right?///////
+  export const socket = io("http://localhost:8000",
+    {
+      auth:{
+        token
+      }
+    }
+  )
+
+export default function DonorDashboard() {
   const [response, setResponse] = useState({
     allRequest: [],
     acceptedRequest: [],
@@ -13,8 +26,17 @@ function DonorDashboard() {
     totalRequest: 0,
     totalDonation: 0,
   });
+  
+  
 
   useEffect(() => {
+    
+    socket.on('connect', () => {
+        console.log('Connected with socket ID:', socket.id); // Access the socket ID
+    });
+    
+    
+    
     async function fetchData() {
       const token = localStorage.getItem("AuthToken");
       if (!token) return;
@@ -37,6 +59,7 @@ function DonorDashboard() {
     }
 
     fetchData();
+    socket.emit("register", {token, id:socket.id})
   }, []);
 
   const total = response.totalDonation || (response.allRequest.length + response.acceptedRequest.length);
@@ -127,4 +150,4 @@ function DonorDashboard() {
   );
 }
 
-export default DonorDashboard;
+

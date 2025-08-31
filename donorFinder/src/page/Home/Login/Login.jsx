@@ -48,7 +48,7 @@ const Login = () => {
 
         console.log(res.data)
         
-        
+        localStorage.setItem("loggedInStatus","true")
         setLoginState(true)
         setName(name)
         setRole(role)
@@ -60,8 +60,8 @@ const Login = () => {
    }
   )
   .catch(err=>{
-    console.log(err.response.data.message);
-    setMessage(err.response.data.message)
+    console.log(err.response?.data.message);
+    setMessage(err.response?.data.message)
     
   })
     

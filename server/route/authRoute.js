@@ -11,7 +11,8 @@ import {
     verifyRefreshToken,
     logout,
     updateUser, 
-    getDonors} from '../controller/authController.js'
+    getDonors,
+    alertDonorController} from '../controller/authController.js'
 
 
 router.post('/register',registerUser)
@@ -28,11 +29,13 @@ router.get('/admin/dashboard', protect,verifyRole(["admin"]), adminDashboardCont
 
 router.get('/user/dashboard',protect,verifyRole(["user"]), userDashboardController)
 
-router.get('/donor/dashboard',protect,verifyRole(["donor","user"]), donorDashboardController)
+router.get('/donor/dashboard',protect,()=>verifyRole(["donor","user"]), donorDashboardController)
 
-router.put('/update', updateUser)
+router.put('/update',protect, updateUser)
 
 router.put('/donor/register', protect, makeDonor)
+
+router.post('/alertDonor', protect, alertDonorController)
 
 
 
