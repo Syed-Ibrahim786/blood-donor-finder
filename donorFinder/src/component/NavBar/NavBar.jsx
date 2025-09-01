@@ -22,10 +22,7 @@ const NavBar = () => {
 
   const inActive = 'font-semi-bold '
 
-  const signout = () => {
-    setLoginState(false)
-    localStorage.clear()
-  }
+  
 
 
   return (
@@ -33,12 +30,12 @@ const NavBar = () => {
       <div className='text-white p-5  shadow-2xl bg-transparent'>
         <nav className='max-w-7xl flex  mx-auto justify-between '>
        <div className='my-auto'>
-         <NavLink to="/dashboard" className=' transition-all hover:scale-105' ><img className='w-30 md:w-50 ' src='/src/assets/BloodNet.svg' /></NavLink>
+         <NavLink to="/dashboard/donor" className=' transition-all hover:scale-105' ><img className='w-30 md:w-50 ' src='/src/assets/BloodNet.svg' /></NavLink>
        </div>  
         {
           LoginState && (<ul className= {`flex items-center transition-all duration-300 ease-in-out`}>
            <li className='text-black'>Hello {name}</li>
-            <li><NavLink onClick={()=>{signout()}} className="bg-white text-red-500 px-5 py-3 rounded-xl">Sign Out</NavLink></li>
+            {/* <li><NavLink onClick={()=>{signout()}} className="bg-white text-red-500 px-5 py-3 rounded-xl">Sign Out</NavLink></li> */}
             
         </ul>)
         }

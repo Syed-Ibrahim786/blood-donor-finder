@@ -1,23 +1,46 @@
-import LocationGetter, {cityGetter} from '@/services/LocationGetter'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
+import LocationGetter, { cityGetter } from "@/services/LocationGetter";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AppContext from "@/context/AppContext";
+import SendAlert from "@/components/SendAlert";
+import SlidingMenu from "@/component/sliding-menu/SlidingMenu";
+import { AnimatePresence, motion } from "framer-motion";
+
 // import { socket } from './DonorDashboard'
 import io from 'socket.io-client'
 
 
 export default function Search() {
-  const[allState, setAllState] = useState([])
-  const[selectedState, setSelectedState] = useState('')
-  const[city, setCity] = useState([])
-  const[selectedCity, setSelectedCity] = useState('')
+  const {
+    selectedDonor,
+    bloodGroup,
+    setBloodGroup,
+    setSelectedDonor,
+    alertToggle,
+    closeAlert,
+    openAlert,
+    setAlertToggle,
+  } = useContext(AppContext);
+
+  const [allState, setAllState] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+  const [city, setCity] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
   const[bloodGroup, setBloodGroup] = useState('')
-  const[donors, setDonors] = useState([])
+  const [donors, setDonors] = useState([]);
   const [selectedDonors, setSelectedDonors] = useState([])
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
-  const dropdownStyle = 'bg-white rounded p-2 w-[200px] max-w-full truncate '
+  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const dropdownStyle = "bg-white rounded p-2 w-[200px] max-w-full truncate ";
+
+  const loadState = () => {
+    setAllState(LocationGetter());
+  };
+
+
   
 const token = localStorage.getItem("AuthToken");
     if(!token){
@@ -32,9 +55,52 @@ const token = localStorage.getItem("AuthToken");
     }
   )
 
-  const loadState = () =>{
-    setAllState(LocationGetter())
+
+
+
+  useEffect(() => {
+    setCity(cityGetter(selectedState));
+    console.log(allState);
+  }, [selectedState]);
+
+  async function handleSubmit() {
+    const token = localStorage.getItem("AuthToken");
+    if (!token) {
+      navigate("/login");
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:8000/search?city=${
+          selectedState + "," + selectedCity
+        }&bloodGroup=${bloodGroup}`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      setDonors(data);
+    } catch (e) {
+      console.log(e);
+    }
   }
+
+  const selectUser = (donor) => {
+    const phone = donor.phone;
+
+    setSelectedDonor((prev) => {
+      if (prev.includes(phone)) {
+        return prev.filter((p) => p !== phone);
+      } else {
+        return [...prev, phone];
+      }
+    });
+  };
+
+  console.log(selectedDonor);
+
+  console.log(donors);
 
 
   useEffect(() => {
@@ -146,42 +212,68 @@ async function alertDonor(){
         phone
       })
  }
+
   return (
-    <div className=''>
-    <div className=' bg-fuchsia-700 p-5 flex justify-between flex-col lg:flex-row'>
-      <h2 className='  text-white text-2xl'>You can now Search Alert Donors</h2>
-      {/* <input className='input rounded-2xl bg-white px-5 border-blue-400 border-2 cursor-pointer hover:border-blue-600 w-[200px] h-[50px]' type='text' placeholder='thandalam,chennai'/> */}
-    <div className=' flex-col md:flex-row flex gap-2 mt-5 items-center'>
-      <select className={dropdownStyle} onClick={loadState} onChange={(e)=>{setSelectedState(e.target.value)}}>
-        <option className=' truncate' value="" hidden>select state</option>
-        {  allState && (allState?.map((eachState,index) => (
-          <option className=' max-w-[100px] truncate' code={eachState.isoCode} key={index}>{eachState.name}</option>
-        )))
-        }
-      </select>
+    <>
+      <SlidingMenu />
+      <div className="max-w-7xl mx-auto">
+        <div className="text-black rounded-xl items-center bg-white my-5 shadow-xl p-8 flex justify-between flex-col lg:flex-row">
+          <h2 className=" text-[#6e6e6e] text-2xl">
+            You can now Search Alert Donors
+          </h2>
+          {/* <input className='input rounded-2xl bg-white px-5 border-blue-400 border-2 cursor-pointer hover:border-blue-600 w-[200px] h-[50px]' type='text' placeholder='thandalam,chennai'/> */}
+          <div className=" flex-col md:flex-row flex gap-2 items-center">
+            <select
+              className={dropdownStyle}
+              onClick={loadState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+              }}
+            >
+              <option className=" truncate" value="" hidden>
+                select state
+              </option>
+              {allState &&
+                allState?.map((eachState, index) => (
+                  <option
+                    className=" max-w-[100px] truncate"
+                    code={eachState.isoCode}
+                    key={index}
+                  >
+                    {eachState.name}
+                  </option>
+                ))}
+            </select>
 
-      <select className={dropdownStyle} onChange={(e)=>{setSelectedCity(e.target.value)}}>
-        <option value="" hidden>select city</option>
-        { city && (
-          city.map((eachCity, index) => {
-            return(
-              <option key={index}>{eachCity.name}</option>
-            )
-          }))
-        }
-      </select>
+            <select
+              className={dropdownStyle}
+              onChange={(e) => {
+                setSelectedCity(e.target.value);
+              }}
+            >
+              <option value="" hidden>
+                select city
+              </option>
+              {city &&
+                city.map((eachCity, index) => {
+                  return <option key={index}>{eachCity.name}</option>;
+                })}
+            </select>
 
-      <select className={dropdownStyle} onChange={(e) =>{
-        setBloodGroup(e.target.value)
-        }}>
-        <option value="">select blood Group</option>
-        { bloodGroups && (
-          bloodGroups.map((blood, index) => (
-            <option key={index}>{blood}</option>
-          ))
-        ) }
-      </select>
 
+            <select
+              className={dropdownStyle}
+              onChange={(e) => {
+                setBloodGroup(e.target.value);
+              }}
+            >
+              <option value="">select blood Group</option>
+              {bloodGroups &&
+                bloodGroups.map((blood, index) => (
+                  <option key={index}>{blood}</option>
+                ))}
+            </select>
+      
       <button onClick={handleSubmit} className=' bg-blue-700 md:w-25 w-[200px] p-2 text-white  rounded cursor-pointer active:bg-blue-800'>search</button>
     </div>
     
@@ -222,8 +314,10 @@ async function alertDonor(){
   e.preventDefault()
   alertDonor()
 
+
 }} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
   <img src="donorFinder\src\assets\cancel.png" alt="cancel button click to goback and select donors" onClick={(e) => {
+
 
     e.target.parentNode.className = "bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden"
   }} />
@@ -236,5 +330,7 @@ async function alertDonor(){
   <button type='submit' className='bg-orange-500 p-2 rounded-2xl text-white block w-[110px]' title='alert confirmation'>Alert Donors</button>
 </form>
   </div>
+  </>
   )
 }
+
