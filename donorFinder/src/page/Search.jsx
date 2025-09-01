@@ -1,3 +1,4 @@
+
 import LocationGetter, { cityGetter } from "@/services/LocationGetter";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,6 +6,7 @@ import AppContext from "@/context/AppContext";
 import SendAlert from "@/components/SendAlert";
 import SlidingMenu from "@/component/sliding-menu/SlidingMenu";
 import { AnimatePresence, motion } from "framer-motion";
+
 // import { socket } from './DonorDashboard'
 import io from 'socket.io-client'
 
@@ -25,7 +27,7 @@ export default function Search() {
   const [selectedState, setSelectedState] = useState("");
   const [city, setCity] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
-  // const[bloodGroup, setBloodGroup] = useState('')
+  const[bloodGroup, setBloodGroup] = useState('')
   const [donors, setDonors] = useState([]);
   const [selectedDonors, setSelectedDonors] = useState([])
 
@@ -37,6 +39,7 @@ export default function Search() {
   const loadState = () => {
     setAllState(LocationGetter());
   };
+
 
   
 const token = localStorage.getItem("AuthToken");
@@ -51,6 +54,7 @@ const token = localStorage.getItem("AuthToken");
       }
     }
   )
+
 
 
 
@@ -97,6 +101,7 @@ const token = localStorage.getItem("AuthToken");
   console.log(selectedDonor);
 
   console.log(donors);
+
 
   useEffect(() => {
     
@@ -255,6 +260,7 @@ async function alertDonor(){
                 })}
             </select>
 
+
             <select
               className={dropdownStyle}
               onChange={(e) => {
@@ -308,8 +314,10 @@ async function alertDonor(){
   e.preventDefault()
   alertDonor()
 
+
 }} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
   <img src="donorFinder\src\assets\cancel.png" alt="cancel button click to goback and select donors" onClick={(e) => {
+
 
     e.target.parentNode.className = "bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden"
   }} />
