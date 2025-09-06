@@ -17,6 +17,7 @@ export async function registerUser(req, res){
     }
     //verify email
     const hashedPassword = await bcrypt.hash(password,10)
+    const role = isDonor?"donor":"user"
     await DonorAndBeneficiary.create({
         name:name,
         email:email,
@@ -24,7 +25,8 @@ export async function registerUser(req, res){
         phone:phone,
         city:city,
         bloodGroup:bloodGroup,
-        isDonor:isDonor 
+        isDonor:isDonor,
+        role:role
     })
     
     res.status(201).json({message:"registration in db successfull "})
@@ -32,7 +34,7 @@ export async function registerUser(req, res){
 
 function createAccessToken(user){
     const payload = {name:user.name, city:user.city, bloodGroup:user.bloodGroup,id:user._id,role:user.role}
-    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'15m'})
+    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'1d'})
     return token
 }
 
@@ -51,7 +53,7 @@ export async function loginUser(req, res){
 
     const token = createAccessToken(user)
    
-    const refreshToken = jwt.sign({ id: user._id },process.env.JWT_REFRESH_SECRET,{expiresIn:'20m'}) 
+    const refreshToken = jwt.sign({ id: user._id },process.env.JWT_REFRESH_SECRET,{expiresIn:'1d'}) 
     user.refreshToken.push(refreshToken)
     await user.save()  
     res.status(200).json({message:"login in db successfull and token generated", token:token,refreshToken:refreshToken, role:user.role, name:user.name})
@@ -59,6 +61,7 @@ export async function loginUser(req, res){
 
 export async function getDonors(req, res){
     const {city, bloodGroup} = req.query
+    console.log(city, bloodGroup)
     const donorsAfterSearch = await DonorAndBeneficiary.find({city:city, bloodGroup:bloodGroup, isDonor:true}).select('-__v -isDonor').lean()
     // console.log(donorsAfterSearch)
     // console.log(req.user)
@@ -76,11 +79,12 @@ export async function getDonors(req, res){
 
 export async function makeDonor(req, res){
     try{
-    const user = await DonorAndBeneficiary.findOne({name:req.user.name})
-    console.log(user)    
+    const user = await DonorAndBeneficiary.findOne({_id:req.user.id})
+    console.log(req.user)    
     user.isDonor = true
+    user.role = "donor"
         await user.save()
-        res.json({message:"congratulations!! you are now a donor!"})
+        res.status(204).json({message:"congratulations!! you are now a donor!"})
     }catch{
         res.status(500).json({message:"internal server error"})
     }
@@ -101,7 +105,7 @@ export async function userDashboardController(req, res){
         res.status(500).json({message:"server error in loading user dashboard"})
     }
     
-}
+}  
 
 export async function donorDashboardController(req, res) {
     try{
@@ -218,13 +222,17 @@ export async function logout(req, res){
 }
 
 export async function updateUser(req, res){
-    const {userId, name, city,bloodGroup, phone} = req.body
-    const user = await DonorAndBeneficiary.findById({_id:userId})
+    const { name, city,bloodGroup, phone} = req.body
+    const user = await DonorAndBeneficiary.findById({_id:req.user.id})
     user.name = name
     user.city = city
     user.bloodGroup = bloodGroup
     user.phone = phone
     await user.save()
+    req.user.name= name
+    req.user.city = city
+    req.user.bloodGroup = bloodGroup
+    console.log(req.user) 
     res.status(201).json({message:"update successful"})
 }
 

@@ -12,11 +12,12 @@ export const ContextWrapper = ({children}) => {
       const[selectedDonor , setSelectedDonor] = useState([])
     const [isAdmin , setIsAdmin] = useState(false);
     const[role,setRole] = useState("user")
+     const [isDonor, setIsDonor] = useState(false);
     const[name, setName] = useState("")
     const [LoginState , setLoginState ] = useState(false)  
     const [userId , setUserId] = useState("")
     const [alertToggle , setAlertToggle] = useState(false)
-      const[bloodGroup, setBloodGroup] = useState('')
+      const[bloodGroup, setBloodGroup] = useState("")
     
     const token = localStorage.getItem("AuthToken");
 
@@ -42,7 +43,7 @@ export const ContextWrapper = ({children}) => {
     
 
     return (
-        <AppContext.Provider value={{ bloodGroup, setBloodGroup , userId ,openAlert , closeAlert, setUserId , selectedDonor , setSelectedDonor , LoginState , setLoginState , alertToggle , setAlertToggle, isAdmin , setIsAdmin, role, setRole, setName, name}}>
+        <AppContext.Provider value={{ bloodGroup, setBloodGroup ,isDonor, setIsDonor, userId ,openAlert , closeAlert, setUserId , selectedDonor , setSelectedDonor , LoginState , setLoginState , alertToggle , setAlertToggle, isAdmin , setIsAdmin, role, setRole, setName, name}}>
             {children}
         </AppContext.Provider>
     )

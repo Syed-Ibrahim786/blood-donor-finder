@@ -33,8 +33,12 @@ io.use((socket, next) => {
     socket.user = user
     console.log("user added to socket")
      next()
-    }catch(e){
-        console.log(e)
+    }catch(err){
+        if (err.name === "TokenExpiredError") {
+      return next(new Error("Token expired, please login again"));
+    }
+    return next(new Error("Authentication error"));
+  
         
     }
 })

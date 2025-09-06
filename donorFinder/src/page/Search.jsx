@@ -27,7 +27,7 @@ export default function Search() {
   const [selectedState, setSelectedState] = useState("");
   const [city, setCity] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
-  const[bloodGroup, setBloodGroup] = useState('')
+  // const[bloodGroup, setBloodGroup] = useState('')
   const [donors, setDonors] = useState([]);
   const [selectedDonors, setSelectedDonors] = useState([])
 
@@ -72,7 +72,7 @@ const token = localStorage.getItem("AuthToken");
       const res = await fetch(
         `http://localhost:8000/search?city=${
           selectedState + "," + selectedCity
-        }&bloodGroup=${bloodGroup}`,
+        }&bloodGroup=${encodeURIComponent(bloodGroup)}`,
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -123,31 +123,32 @@ const token = localStorage.getItem("AuthToken");
     console.log(allState)
   },[selectedState])
 
- async function handleSubmit(){
-  const token = localStorage.getItem("AuthToken");
-  if(!token){
-    navigate('/login')
-  }
-  try{
+//  async function handleSubmit(){
+//   const token = localStorage.getItem("AuthToken");
+//   if(!token){
+//     navigate('/login')
+//   }
+//   try{
       
 
-    const res = await fetch(`http://localhost:8000/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
-    {
-      headers:{
-        authorization:`Bearer ${token}`
-      }
-    }
-  );
-  console.log(res.status)
-  const data = await res.json();
-  setDonors(data)
-  console.log(donors)
-  }catch(e){
-    console.log(e)
-  }
+//     const res = await fetch(`http://localhost:8000/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
+//     {
+//       headers:{
+//         authorization:`Bearer ${token}`
+//       }
+//     }
+//   );
+
+//   console.log(res.status)
+//   const data = await res.json();
+//   setDonors(data)
+//   console.log(donors)
+//   }catch(e){
+//     console.log(e)
+//   }
   
 
- }
+//  }
  console.log(selectedDonors)
 
 

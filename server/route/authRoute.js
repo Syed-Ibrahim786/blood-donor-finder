@@ -27,9 +27,9 @@ router.get('/search', protect, getDonors)
 
 router.get('/admin/dashboard', protect,verifyRole(["admin"]), adminDashboardController)
 
-router.get('/user/dashboard',protect,verifyRole(["user"]), userDashboardController)
+router.get('/user/dashboard',protect,verifyRole(["user", "donor"]), userDashboardController)
 
-router.get('/donor/dashboard',protect,()=>verifyRole(["donor","user"]), donorDashboardController)
+router.get('/donor/dashboard',protect,verifyRole(["donor"]), donorDashboardController)
 
 router.put('/update',protect, updateUser)
 
