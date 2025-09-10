@@ -31,7 +31,7 @@ function SlidingMenu() {
     <div
       className={`${
         menu ? active : inActive
-      } text-center duration-300 ease-in-out h-full w-fit fixed top-0 flex`}
+      } text-center duration-300 ease-in-out h-full w-fit z-10 fixed top-0 flex`}
     >
       <div className="bg-white shadow-2xl  flex flex-col">
         <div className="flex flex-col gap-5 border-2 w-full ">
@@ -39,7 +39,7 @@ function SlidingMenu() {
           <div className="pb-5 shadow-xl ">{name}</div>
        </div>
 
-        <div className="flex flex-col h-full  justify-between items-start m-5 ">
+        <div className="flex flex-col h-full justify-between items-start m-5 ">
           <div className="flex flex-col items-start gap-3">
             <NavLink to="/dashboard/user" className="font-semibold">Home</NavLink>
 

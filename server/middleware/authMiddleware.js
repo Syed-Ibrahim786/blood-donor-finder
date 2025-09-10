@@ -14,7 +14,25 @@ export function protect(req, res, next){
         req.user = decoded
         next()
     }catch(e){
-      console.log("here is prob") 
+      
+        res.status(401).json({message:"Access Token Expired"})
+    }
+}
+
+export function verifyLoggin(req, res, next){
+    const token = req.headers.authorization?.split(' ')[1]
+    if(!token){
+      
+        return res.status(403).json({message:"Access Token Missing"})
+       
+    }
+    try{
+        const decoded = jwt.verify(token,process.env.JWT_SECRET)
+        req.user = decoded
+        return res.status(200).json({message:"valid Token(user)!"})
+        
+    }catch(e){
+      
         res.status(401).json({message:"Access Token Expired"})
     }
 }
@@ -36,10 +54,9 @@ export function protect(req, res, next){
 
 // Role-based middleware generator
 export function verifyRole(requiredRole) {
-  console.log(requiredRole)
+  
   
   return (req, res, next) => {
-    console.log("!requiredRole.includes(req.user.role) = ",!requiredRole.includes(req.user.role))
     
     try {
       if (!requiredRole.includes(req.user.role)) {

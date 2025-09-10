@@ -1,5 +1,5 @@
 import express from 'express'
-import { protect, verifyRole } from '../middleware/authMiddleware.js'
+import { protect, verifyLoggin, verifyRole } from '../middleware/authMiddleware.js'
 const router = express.Router()
 import { 
     registerUser,
@@ -18,6 +18,8 @@ import {
 router.post('/register',registerUser)
 
 router.post('/login', loginUser)
+
+router.get('/verify', verifyLoggin)
 
 router.post('/refresh-token', verifyRefreshToken)
 

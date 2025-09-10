@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import { ContextWrapper } from './context/AppContext'
-import LoginAlign from './LoginAlign'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
