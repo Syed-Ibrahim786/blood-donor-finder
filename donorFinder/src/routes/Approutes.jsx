@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Router, Route, Routes, Navigate } from "react-router-dom";
 import NavBar from "../component/NavBar/NavBar";
-import MainLayout from "../layout/mainLayout";
+import MainLayout from "../layout/MainLayout";
 import Home from "../page/Home/Home";
 import Login from "../page/Home/Login/Login";
 import Register from "../page/Home/Login/Register";
