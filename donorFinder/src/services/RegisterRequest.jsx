@@ -8,7 +8,7 @@ function RegisterRequest(reqCreds) {
 
         const creds = {"name":reqCreds.name , "email":reqCreds.email , "bloodGroup":reqCreds.blood , "isDonor":reqCreds.donor ,"city":reqCreds.city , "password":reqCreds.password , "phone":reqCreds.phone}
 
-       return axios.post("http://localhost:8000/register" , creds)
+       return axios.post("https://bloodnet-du9t.onrender.com/register" , creds)
 
 
     }

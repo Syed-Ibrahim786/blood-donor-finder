@@ -4,7 +4,7 @@ export default function BecomeDonorButton() {
   const [showPopup, setShowPopup] = useState(false);
 
   async function handleBecomeDonor() {
-    const res = await fetch("http://localhost:8000/donor/register", {
+    const res = await fetch("https://bloodnet-du9t.onrender.com/donor/register", {
       method: "PUT",
       headers: {
         authorization: `Bearer ${localStorage.getItem("AuthToken")}`,

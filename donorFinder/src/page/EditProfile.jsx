@@ -15,7 +15,7 @@ export default function EditProfile() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch("http://localhost:8000/update", {
+    const res = await fetch("https://bloodnet-du9t.onrender.com/update", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

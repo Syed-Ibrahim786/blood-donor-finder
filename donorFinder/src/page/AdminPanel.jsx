@@ -14,7 +14,7 @@ function AdminPanel() {
         if (!token) return;
   
         try {
-          const res = await fetch("http://localhost:8000/admin/dashboard", {
+          const res = await fetch("https://bloodnet-du9t.onrender.com/admin/dashboard", {
             headers: {
               authorization: `Bearer ${token}`,
             },

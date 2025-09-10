@@ -47,7 +47,7 @@ const token = localStorage.getItem("AuthToken");
       navigate('/login')
     }
 
-  const socket = io("http://localhost:8000",
+  const socket = io("https://bloodnet-du9t.onrender.com",
     {
       auth:{
         token
@@ -70,7 +70,7 @@ const token = localStorage.getItem("AuthToken");
     }
     try {
       const res = await fetch(
-        `http://localhost:8000/search?city=${
+        `https://bloodnet-du9t.onrender.com/search?city=${
           selectedState + "," + selectedCity
         }&bloodGroup=${encodeURIComponent(bloodGroup)}`,
         {
@@ -131,7 +131,7 @@ const token = localStorage.getItem("AuthToken");
 //   try{
       
 
-//     const res = await fetch(`http://localhost:8000/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
+//     const res = await fetch(`https://bloodnet-du9t.onrender.com/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
 //     {
 //       headers:{
 //         authorization:`Bearer ${token}`
@@ -181,7 +181,7 @@ async function alertDonor(){
     navigate('/login')
   }
   try{
-    const res = await fetch("http://localhost:8000/alertDonor",
+    const res = await fetch("https://bloodnet-du9t.onrender.com/alertDonor",
     {
       method:"POST",
       headers: {

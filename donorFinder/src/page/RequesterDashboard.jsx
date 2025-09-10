@@ -158,7 +158,7 @@ export default function RequesterDashboard() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://localhost:8000/user/dashboard", {
+        const response = await fetch("https://bloodnet-du9t.onrender.com/user/dashboard", {
           headers: {
             authorization: `Bearer ${localStorage.getItem("AuthToken")}`,
           },

@@ -9,7 +9,7 @@ import "react-circular-progressbar/dist/styles.css";
 import io from "socket.io-client";
 
 const token = localStorage.getItem("AuthToken");
-export const socket = io("http://localhost:8000", {
+export const socket = io("https://bloodnet-du9t.onrender.com", {
   auth: {
     token,
   },
@@ -140,7 +140,7 @@ export default function DonorDashboard() {
       if (!token) return;
 
       try {
-        const res = await fetch("http://localhost:8000/donor/dashboard", {
+        const res = await fetch("https://bloodnet-du9t.onrender.com/donor/dashboard", {
           headers: {
             authorization: `Bearer ${token}`,
           },

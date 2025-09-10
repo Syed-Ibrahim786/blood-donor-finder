@@ -7,7 +7,7 @@ export default function Feedback() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch("http://localhost:8000/feedback", {
+    const res = await fetch("https://bloodnet-du9t.onrender.com/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

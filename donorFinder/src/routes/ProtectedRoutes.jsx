@@ -9,7 +9,7 @@ function ProtectedRoutes() {
   const {setLoginState} = useContext(AppContext)
   useLayoutEffect( () => {
     async function verify(){
-const res = await fetch("http://localhost:8000/verify",
+const res = await fetch("https://bloodnet-du9t.onrender.com/verify",
       {
         method:"GET",
         headers:{

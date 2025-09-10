@@ -30,7 +30,7 @@ export default function TopCitiesChart() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("http://localhost:8000/admin/dashboard", {
+        const res = await fetch("https://bloodnet-du9t.onrender.com/admin/dashboard", {
           headers: {
             authorization: `Bearer ${localStorage.getItem("AuthToken")}`,
           },
