@@ -1,5 +1,6 @@
-import { makeDonor } from "@/component/NavBar/NavBar";
+// import { makeDonor } from "@/component/NavBar/NavBar";
 import AppContext from "@/context/AppContext";
+
 import React, { useCallback, useContext, useLayoutEffect, useState, useRef } from "react";
 import {
   CircularProgressbarWithChildren,
@@ -7,6 +8,7 @@ import {
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import io from "socket.io-client";
+import BecomeDonorButton from "./BecomeDonor";
 
 const token = localStorage.getItem("AuthToken");
 export const socket = io("https://bloodnet-du9t.onrender.com", {
@@ -125,8 +127,7 @@ export default function DonorDashboard() {
     totalRequest: 0,
     totalDonation: 0,
   });
-  const successPopup = useRef();
-  const successpopupMessage = useRef();
+  
   const {isDonor, setIsDonor} = useContext(AppContext)
   console.log(isDonor);
   useLayoutEffect(() => {
@@ -170,10 +171,7 @@ export default function DonorDashboard() {
   const pendingPercent = total ? (pending / total) * 100 : 0;
 
   return <>
-  <div ref={successPopup} className="hidden">
-        <h2 ref={successpopupMessage} className="">
-CONGRATUALTIONS YOU ARE DONOR NOW!        </h2>
-      </div>
+  
   {isDonor ? 
     <DonorComponent
       response={response}
@@ -184,9 +182,7 @@ CONGRATUALTIONS YOU ARE DONOR NOW!        </h2>
       pendingPercent={pendingPercent}
     />
    : 
-    <h2 className="mt-20 text-xl">
-      Become Donor <button onClick={()=>makeDonor(successPopup, successpopupMessage, setIsDonor)} className="bg-red-600 hover:bg-red-700 text-[white] font-normal px-2 py-1 rounded-lg shadow">Click here</button>
-    </h2>}
+   <BecomeDonorButton/> }
   
   </> 
 }

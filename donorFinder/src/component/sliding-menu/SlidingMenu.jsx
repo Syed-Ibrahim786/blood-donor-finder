@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import AppContext from "../../context/AppContext";
-import { makeDonor } from "../NavBar/NavBar";
+// import { makeDonor } from "../NavBar/NavBar";
 
 function SlidingMenu() {
   const [menu, setMenu] = useState(false);
@@ -48,7 +48,7 @@ function SlidingMenu() {
             </NavLink>
             <NavLink
               to="becomedonor"
-              onClick={() => makeDonor()}
+              
               className="font-semibold"
             >
               Become Donor
