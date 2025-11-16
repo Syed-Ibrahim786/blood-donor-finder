@@ -7,15 +7,15 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import BecomeDonorButton from "./BecomeDonor";
 
 const token = localStorage.getItem("AuthToken");
-export const socket = io("https://bloodnet-du9t.onrender.com", {
-  auth: {
-    token,
-  },
-});
+// export const socket = io("https://bloodnet-du9t.onrender.com", {
+//   auth: {
+//     token,
+//   },
+// });
 
  
 
@@ -131,9 +131,9 @@ export default function DonorDashboard() {
   const {isDonor, setIsDonor} = useContext(AppContext)
   console.log(isDonor);
   useLayoutEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected with socket ID:", socket.id); // Access the socket ID
-    });
+    // socket.on("connect", () => {
+    //   console.log("Connected with socket ID:", socket.id); // Access the socket ID
+    // });
 
     async function fetchData() {
       const token = localStorage.getItem("AuthToken");
@@ -159,7 +159,7 @@ export default function DonorDashboard() {
     }
 
     fetchData();
-    socket.emit("register", { token, id: socket.id });
+    // socket.emit("register", { token, id: socket.id });
   }, []);
 
   const total =
