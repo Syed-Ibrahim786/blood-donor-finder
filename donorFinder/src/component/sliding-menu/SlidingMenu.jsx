@@ -38,7 +38,7 @@ function SlidingMenu() {
       <div className="bg-white shadow-2xl  flex flex-col">
         <div className="flex flex-row justify-center gap-2 w-full h-40 ">
           <div className=" flex items-center">
-            <div className="h-20 w-20 bg-blue-400  rounded-full  text-6xl text-white">{name.substring(0,1)}</div>
+            <div className="h-20 w-20 bg-blue-400  rounded-full  text-7xl  text-white lowercase">i</div>
           </div>
           <div className=" flex flex-col justify-center"><b>{name}</b><p>{role}</p></div>
         </div>
