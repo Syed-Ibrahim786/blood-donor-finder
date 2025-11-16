@@ -7,6 +7,7 @@ import SendAlert from "@/components/SendAlert";
 import SlidingMenu from "@/component/sliding-menu/SlidingMenu";
 import { AnimatePresence, motion } from "framer-motion";
 
+import cancel from "../assets/cancel.png";
 // import { socket } from './DonorDashboard'
 import io from 'socket.io-client'
 
@@ -30,12 +31,13 @@ export default function Search() {
   // const[bloodGroup, setBloodGroup] = useState('')
   const [donors, setDonors] = useState([]);
   const [selectedDonors, setSelectedDonors] = useState([])
+  const [alertStatus,setAlertStatus] = useState("progress");
 
   const navigate = useNavigate();
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   const dropdownStyle = "bg-white rounded p-2 w-[200px] max-w-full truncate ";
-
+  const inputStyle = 'border-1 border-black block w-full h-10 my-2 px-4';
   const loadState = () => {
     setAllState(LocationGetter());
   };
@@ -123,32 +125,7 @@ const token = localStorage.getItem("AuthToken");
     console.log(allState)
   },[selectedState])
 
-//  async function handleSubmit(){
-//   const token = localStorage.getItem("AuthToken");
-//   if(!token){
-//     navigate('/login')
-//   }
-//   try{
-      
 
-//     const res = await fetch(`https://bloodnet-du9t.onrender.com/search?city=${selectedState + ',' + selectedCity}&bloodGroup=${bloodGroup}`,
-//     {
-//       headers:{
-//         authorization:`Bearer ${token}`
-//       }
-//     }
-//   );
-
-//   console.log(res.status)
-//   const data = await res.json();
-//   setDonors(data)
-//   console.log(donors)
-//   }catch(e){
-//     console.log(e)
-//   }
-  
-
-//  }
  console.log(selectedDonors)
 
 
@@ -199,9 +176,11 @@ async function alertDonor(){
   )
   if(res.status === 201){
     console.log("alert created")
+    setAlertStatus("Succesfully alerted\npatient may recover soon!")
   }
   }catch(e){
-    console.log("error in creating alert ",e)
+    setAlertStatus(e.message);
+    console.log("error in creating alert",e)
   }
 
   
@@ -309,6 +288,7 @@ async function alertDonor(){
         </div>
     ) }
 <button onClick={(e) => {
+  if(selectedDonors.length == 0) return;
   e.target.nextElementSibling.className += "block"
 }} className=' bg-orange-600 p-4 rounded-2xl text-black shadow-red-600 shadow-2xl absolute bottom-20 right-10' title='donor alerting button'>Alert</button>
 <form onSubmit={(e) => {
@@ -317,18 +297,19 @@ async function alertDonor(){
 
 
 }} title='extra information for donor to arrive' className='bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden'>
-  <img src="donorFinder\src\assets\cancel.png" alt="cancel button click to goback and select donors" onClick={(e) => {
+  <img className="h-6 float-right rounded-2xl border-2 border-gray-600" src={cancel} alt="cancel button click to goback and select donors" onClick={(e) => {
 
 
     e.target.parentNode.className = "bg-white shadow-xl w-[90%] p-10 rounded-2xl absolute top-[20%] left-5.5 hidden"
   }} />
   <label htmlFor="phoneInput">Enter Phone Number<p className='text-[10px]'>Donor will contact from this and confirm</p></label>
-  <input required type="phone" id='phoneInput' className='border-1 border-black block w-full h-10 my-2'/>
+  <input required type="number" id='phoneInput' className={inputStyle}/>
   <label htmlFor="cityInput">Enter your City<p className='text-[10px]'>enter where you are requesting from</p></label>
-  <input required type="text" id='cityInput' className='border-1 border-black block w-full h-10 my-2'/>
+  <input required type="text" id='cityInput' className={inputStyle}/>
   <label htmlFor="hospitalInput">Enter Hospital name<p className='text-[10px]'>where donor can donate</p></label>
-  <input required type="text" id='hospitalInput' className='border-1 border-black block w-full h-10 my-2'/>
+  <input required type="text" id='hospitalInput' className={inputStyle}/>
   <button type='submit' className='bg-orange-500 p-2 rounded-2xl text-white block w-[110px]' title='alert confirmation'>Alert Donors</button>
+  {alertStatus.length > 0 && alertStatus}
 </form>
   </div>
   </>

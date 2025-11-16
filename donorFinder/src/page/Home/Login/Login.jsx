@@ -31,9 +31,9 @@ const Login = () => {
   const handleSubmit = (data) => {
     LoginReq(data)
       .then((res) => {
-        console.log(res.data.message);
-        setMessage(res.data.message);
-        if (res.status === 200) {
+        console.log(res.data);
+        
+       
           const { message, _id, token, refreshToken, role, name } = res.data;
           storeTokens(token, refreshToken);
 
@@ -46,7 +46,7 @@ const Login = () => {
           setUserId(_id);
 
           
-        }
+        
       })
       .catch((err) => {
         console.log(err.response?.data.message);
@@ -58,6 +58,7 @@ const Login = () => {
 
   const initiateCreds = (e) => {
     e.preventDefault();
+    setMessage("Signing in...");
 
     let passInp = e.target.password.value;
     

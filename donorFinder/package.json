@@ -21,7 +21,6 @@
     "country-state-city": "^3.2.1",
     "fontawesome": "^5.6.3",
     "framer-motion": "^12.23.0",
-    "hamburger-react": "^2.5.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",

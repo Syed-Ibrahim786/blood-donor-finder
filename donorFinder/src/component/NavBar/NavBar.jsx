@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import "../NavBar/NavBar.css";
 import { Link, NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { Divide as Hamburger } from "hamburger-react";
 import { useState, useRef } from "react";
 import AppContext from "../../context/AppContext";
+import logo from "../../assets/BloodNet.svg";
 
 
 
@@ -31,7 +31,7 @@ const NavBar = () => {
             to="/dashboard/donor"
             className=" transition-all hover:scale-105"
           >
-            <img className="w-30 md:w-50 " src="donorFinder/public/BloodNet.svg" />
+            <img className="w-30 md:w-50 " src={logo} />
           </NavLink>
         </div>
         
