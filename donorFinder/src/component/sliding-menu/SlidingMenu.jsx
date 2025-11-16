@@ -36,14 +36,14 @@ function SlidingMenu() {
       } text-center duration-300 ease-in-out h-full w-fit z-10 fixed top-0 flex`}
     >
       <div className="bg-white shadow-2xl  flex flex-col">
-        <div className="flex flex-row justify-center gap-2 w-full h-40 ">
+        <div className="flex flex-row justify-evenly gap-2 w-full h-40 ">
           <div className=" flex items-center">
-            <div className="h-20 w-20 bg-blue-400  rounded-full  text-7xl  text-white lowercase">i</div>
+            <div className="h-18 w-18 bg-blue-400  rounded-xl  text-6xl   text-white lowercase italic">{name.substring(0,1)}</div>
           </div>
           <div className=" flex flex-col justify-center"><b>{name}</b><p>{role}</p></div>
         </div>
 
-        <div className="flex flex-col h-full justify-between items-start m-5 ">
+        <div className="flex flex-col h-full justify-between items-start m-6">
           <div className="flex flex-col items-start gap-3">
             <NavLink to="/dashboard/user" className="font-semibold">Home</NavLink>
 
