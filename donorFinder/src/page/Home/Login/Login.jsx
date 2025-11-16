@@ -41,7 +41,9 @@ const Login = () => {
 
           localStorage.setItem("loggedInStatus", "true");
           setLoginState(true);
+          localStorage.setItem("name",name);
           setName(name);
+          localStorage.setItem("role",role);
           setRole(role);
           setUserId(_id);
 
