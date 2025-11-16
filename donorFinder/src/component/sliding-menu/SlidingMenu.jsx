@@ -9,8 +9,8 @@ import AppContext from "../../context/AppContext";
 function SlidingMenu() {
   const [menu, setMenu] = useState(false);
   const { setLoginState } = useContext(AppContext);
-  const name = localStorage.getItem("name").length > 0? localStorage.getItem("name"):"";
-  const role = localStorage.getItem("role").length > 0? localStorage.getItem("role"):"";
+  const name = localStorage.getItem("name") !== null? localStorage.getItem("name"):"";
+  const role = localStorage.getItem("role") !== null> 0? localStorage.getItem("role"):"";
 
   const handleToggle = () => {
     if (!menu) {
