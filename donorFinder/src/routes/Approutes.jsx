@@ -10,6 +10,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import AppContext from "../context/AppContext";
 import AdminRoutes from "./AdminRoutes";
 import LoadingScreen from "@/page/LoadingScreen";
+// import Login from "@/page/Home/Login/Login";
 
 // ✅ Lazy-loaded pages
 const NavBar = lazy(() => import("../component/NavBar/NavBar"));
@@ -19,7 +20,7 @@ const Register = lazy(() => import("../page/Home/Login/Register"));
 const AdminLogin = lazy(() => import("../page/Home/Login/AdminLogin"));
 
 // Lazy-loaded pages
-const Home = lazy(() => import("../page/Home/Home"));
+// const Home = lazy(() => import("../page/Home/Home"));
 const Search = lazy(() => import("../page/Search"));
 const AdminPanel = lazy(() => import("../page/AdminPanel"));
 const Dashboard = lazy(() => import("../page/Home/Dashboard"));
@@ -39,7 +40,6 @@ function Approutes() {
         <Routes location={location} key={location.pathname}>
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<MainLayout />} />
-            <Route index element={<Home />} />
             <Route path="/dashboard/" element={<Dashboard />}>
               <Route path="donor" element={<DonorDashboard />} />
               <Route path="user" element={<RequesterDashboard />} />
@@ -65,7 +65,7 @@ function Approutes() {
                   <Login />
                 </motion.div>
               ) : (
-                <Navigate to={`/dashboard/${role}`} />
+                <Navigate to={`/dashboard/${role} `} />
               )
             }
           />

@@ -20,6 +20,7 @@ const res = await fetch("https://bloodnet-du9t.onrender.com/verify",
     const data = await res.json()
     if(res.ok){
       setLoginState(true)
+      
     }
     }
 
