@@ -8,8 +8,7 @@ import SlidingMenu from "@/component/sliding-menu/SlidingMenu";
 import { AnimatePresence, motion } from "framer-motion";
 
 import cancel from "../assets/cancel.png";
-// import { socket } from './DonorDashboard'
-// import io from 'socket.io-client'
+
 
 
 export default function Search() {
@@ -105,21 +104,7 @@ const token = localStorage.getItem("AuthToken");
   console.log(donors);
 
 
-//   useEffect(() => {
-    
-//     console.log("token exist")
 
-    
-// //  if (!token) return;///////////////  should call /refresh-token right?///////
-   
-//      socket.on('connect', () => {
-//             console.log('Connected with socket ID:', socket.id); // Access the socket ID
-//         });
-//          console.log("connect socket works")
-        
-//     socket.emit("register", {token, id:socket.id})
-//      console.log("register works")
-//   },[])
   useEffect(()=>{
     setCity(cityGetter(selectedState))
     console.log(allState)
@@ -184,13 +169,7 @@ async function alertDonor(){
   }
 
   
-  // socket.emit("alert donors", {
-  //       selectedDonors,
-  //       bloodGroup,
-  //       hospitalName,
-  //       city,
-  //       phone
-  //     })
+  
  }
 
   return (

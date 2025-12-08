@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+
 import AppContext from "../../context/AppContext";
+import { ChevronRight } from "lucide-react";
 // import { makeDonor } from "../NavBar/NavBar";
 
 function SlidingMenu() {
@@ -76,14 +76,15 @@ function SlidingMenu() {
       <div className="bg-transparent my-auto">
         <button
           onClick={handleToggle}
-          className="bg-white rounded-tr-lg rounded-br-lg cursor-pointer shadow-xl p-3 "
+          className="bg-white rounded-tr-lg rounded-br-lg cursor-pointer shadow-xl py-4 px-1 "
         >
           <div
             className={`${
               menu ? "rotate-0" : "rotate-180"
             } duration-800 ease-in-out`}
           >
-            <FontAwesomeIcon icon={faCaretRight} />
+            {/* <FontAwesomeIcon icon={faCaretRight} /> */}
+            <ChevronRight size={25}/>
           </div>
         </button>
       </div>

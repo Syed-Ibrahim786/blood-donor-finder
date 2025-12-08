@@ -1,16 +1,24 @@
 import React, { lazy, Suspense, useContext } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import NavBar from "../component/NavBar/NavBar"; // ❌ do not lazy load
-import MainLayout from "../layout/MainLayout";   // ❌ do not lazy load
-import Login from "../page/Home/Login/Login";    // ❌ do not lazy load
-import Register from "../page/Home/Login/Register"; // ❌ do not lazy load
+// import NavBar from "../component/NavBar/NavBar"; // ❌ do not lazy load
+// import MainLayout from "../layout/MainLayout";   // ❌ do not lazy load
+// import Login from "../page/Home/Login/Login";    // ❌ do not lazy load
+// import Register from "../page/Home/Login/Register"; // ❌ do not lazy load
 import { AnimatePresence, motion } from "framer-motion";
 
 import ProtectedRoutes from "./ProtectedRoutes";
 import AppContext from "../context/AppContext";
 import AdminRoutes from "./AdminRoutes";
+import LoadingScreen from "@/page/LoadingScreen";
 
 // ✅ Lazy-loaded pages
+const NavBar = lazy(() => import("../component/NavBar/NavBar"));
+const MainLayout = lazy(() => import("../layout/MainLayout"));
+const Login = lazy(() => import("../page/Home/Login/Login"));
+const Register = lazy(() => import("../page/Home/Login/Register"));
+const AdminLogin = lazy(() => import("../page/Home/Login/AdminLogin"));
+
+// Lazy-loaded pages
 const Home = lazy(() => import("../page/Home/Home"));
 const Search = lazy(() => import("../page/Search"));
 const AdminPanel = lazy(() => import("../page/AdminPanel"));
@@ -20,8 +28,6 @@ const RequesterDashboard = lazy(() => import("../page/RequesterDashboard"));
 const BecomeDonorButton = lazy(() => import("@/page/BecomeDonor"));
 const EditProfile = lazy(() => import("@/page/EditProfile"));
 const Feedback = lazy(() => import("@/page/FeedbackRating"));
-const AdminLogin = lazy(() => import("../page/Home/Login/AdminLogin"));
-
 function Approutes() {
   const location = useLocation();
   const { role, LoginState } = useContext(AppContext);
@@ -29,7 +35,7 @@ function Approutes() {
   return (
     <AnimatePresence mode="wait">
       {/* Wrap everything with Suspense to show fallback while loading */}
-      <Suspense fallback={<div className="text-center p-5">Loading...</div>}>
+      <Suspense fallback={<LoadingScreen/>}>
         <Routes location={location} key={location.pathname}>
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<MainLayout />} />
